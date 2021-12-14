@@ -1,0 +1,146 @@
+/* 
+
+Notes après discussion avec Flo
+
+Les joueurs seront représentés par des images de logo qui seront le background image d'une div qui se déplace
+
+*/
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+}
+
+#game-map {
+  background-image: url("../img/background/dungeon-gameboard-optim.jpg");
+  background-repeat: no-repeat;
+  width: 1120px;
+  height: 705px;
+  display: grid;
+  grid-template-rows: repeat(17, 1fr);
+  grid-template-columns: repeat(27, 1fr);
+}
+
+/* .game-square {
+  border: 1px solid white;
+} */
+
+#interaction-panel {
+  border: 1px solid black;
+  background-color: sandybrown;
+  width: 25vw;
+  height: 705px;
+}
+
+#stat-panel {
+  border: 1px solid black;
+}
+
+.stat-sheet {
+  border: 1px solid black;
+}
+
+#control-panel {
+  border: 1px solid black;
+  height: 60%;
+}
+
+#btn-end-of-turn {
+  width: 100px;
+  height: 40px;
+}
+
+/* ------------------ Monsters and players classes ------------------ */
+
+#regdar {
+  background-image: url("../img/players_and_monsters/regdar.svg");
+}
+
+#jozian {
+  background-image: url("../img/players_and_monsters/jozian.svg");
+}
+
+#mialye {
+  background-image: url("../img/players_and_monsters/mialye.svg");
+}
+
+#lidda {
+  background-image: url("../img/players_and_monsters/lidda.svg");
+}
+
+.goblin {
+  background-image: url("../img/players_and_monsters/goblin.svg");
+}
+
+.gnoll {
+  background-image: url("../img/players_and_monsters/gnoll.svg");
+}
+
+.ogre {
+  background-image: url("../img/players_and_monsters/ogre.svg");
+}
+
+.troll {
+  background-image: url("../img/players_and_monsters/troll.svg");
+}
+
+.skeleton {
+  background-image: url("../img/players_and_monsters/skeleton.svg");
+}
+
+.specter {
+  background-image: url("../img/players_and_monsters/specter.svg");
+}
+
+.lich-king {
+  background-image: url("../img/players_and_monsters/lichKing.svg");
+}
+
+/* ------------------ Walls, doors, pillars, objects and traps classes ------------------ */
+
+.wall {
+  background-image: url("../img/map_elements/stoneWall.svg");
+}
+
+.door {
+  background-image: url("../img/map_elements/doorway.svg");
+}
+
+.pillar {
+  background-image: url("../img/map_elements/pillar.svg");
+}
+
+.locked-chest {
+  background-image: url("../img/map_elements/locked-chest.svg");
+}
+
+.opened-chest {
+  background-image: url("../img/map_elements/open-chest.svg");
+}
+
+.active-hole-trap {
+  background-image: url("../img/map_elements/traps/hole-trap.svg");
+}
+
+.inactive-hole-trap {
+  background-image: url("../img/map_elements/traps/inactive-hole-trap.svg");
+}
+
+.active-fireball-trap {
+  background-image: url("../img/map_elements/traps/fireball-trap.svg");
+}
+
+.inactive-fireball-trap {
+  background-image: url("../img/map_elements/traps/inactive-fireball-trap.svg");
+}
+
+.active-poison-trap {
+  background-image: url("../img/map_elements/traps/poison-trap.svg");
+}
+
+.inactive-poison-trap {
+  background-image: url("../img/map_elements/traps/inactive-poison-trap.svg");
+}
