@@ -41,24 +41,84 @@ const chooseNextPlayer = () => {
   let currentPlayer = document.querySelector(".current-player");
 
   if (currentPlayer.id === "lidda") {
-    // Set Jozian as the next player after Lidda
-    currentPlayer.classList.remove("current-player");
-    const jozian = document.querySelector("#jozian");
-    jozian.classList.add("current-player");
+    // Set Jozian as the next player after Lidda if alive
+    if (document.querySelector("#jozian")) {
+      currentPlayer.classList.remove("current-player");
+      const jozian = document.querySelector("#jozian");
+      jozian.classList.add("current-player");
+      // Else set Mialye if alive
+    } else if (document.querySelector("#mialye")) {
+      currentPlayer.classList.remove("current-player");
+      const mialye = document.querySelector("#mialye");
+      mialye.classList.add("current-player");
+      // Else set Regdar if alive
+    } else if (document.querySelector("#regdar")) {
+      currentPlayer.classList.remove("current-player");
+      const regdar = document.querySelector("#regdar");
+      regdar.classList.add("current-player");
+      // Else set Lidda if alive
+    } else if (document.querySelector("#lidda")) {
+      currentPlayer.classList.remove("current-player");
+      const lidda = document.querySelector("#lidda");
+      lidda.classList.add("current-player");
+      // Else it means that the DUNGEON MASTER WON
+    } else {
+      throw alert("THE DUNGEON MASTER WON!");
+    }
     // Reset the step counter of Lidda
     players.lidda.stepsCount = players.lidda.maxSteps;
   } else if (currentPlayer.id === "jozian") {
-    // Set Mialyë as the next player after Jozian
-    currentPlayer.classList.remove("current-player");
-    const mialye = document.querySelector("#mialye");
-    mialye.classList.add("current-player");
+    // Set Mialyë as the next player after Jozian if alive
+    if (document.querySelector("#mialye")) {
+      currentPlayer.classList.remove("current-player");
+      const mialye = document.querySelector("#mialye");
+      mialye.classList.add("current-player");
+      // Else set Regdar if alive
+    } else if (document.querySelector("#regdar")) {
+      currentPlayer.classList.remove("current-player");
+      const regdar = document.querySelector("#regdar");
+      regdar.classList.add("current-player");
+      // Else set Lidda if alive
+    } else if (document.querySelector("#lidda")) {
+      currentPlayer.classList.remove("current-player");
+      const lidda = document.querySelector("#lidda");
+      lidda.classList.add("current-player");
+      // Else set Jozian if alive
+    } else if (document.querySelector("#jozian")) {
+      currentPlayer.classList.remove("current-player");
+      const jozian = document.querySelector("#jozian");
+      jozian.classList.add("current-player");
+      // Else it means that the DUNGEON MASTER WON
+    } else {
+      throw alert("THE DUNGEON MASTER WON!");
+    }
     // Reset the step counter of Jozian
     players.jozian.stepsCount = players.jozian.maxSteps;
   } else if (currentPlayer.id === "mialye") {
     // Set Regdar as the next player after Mialyë
-    currentPlayer.classList.remove("current-player");
-    const regdar = document.querySelector("#regdar");
-    regdar.classList.add("current-player");
+    if (document.querySelector("#regdar")) {
+      currentPlayer.classList.remove("current-player");
+      const regdar = document.querySelector("#regdar");
+      regdar.classList.add("current-player");
+      // Else set Lidda if alive
+    } else if (document.querySelector("#lidda")) {
+      currentPlayer.classList.remove("current-player");
+      const lidda = document.querySelector("#lidda");
+      lidda.classList.add("current-player");
+      // Else set Jozian if alive
+    } else if (document.querySelector("#jozian")) {
+      currentPlayer.classList.remove("current-player");
+      const jozian = document.querySelector("#jozian");
+      jozian.classList.add("current-player");
+      // Else set Mialye if alive
+    } else if (document.querySelector("#mialye")) {
+      currentPlayer.classList.remove("current-player");
+      const mialye = document.querySelector("#mialye");
+      mialye.classList.add("current-player");
+      // Else it means that the DUNGEON MASTER WON
+    } else {
+      throw alert("THE DUNGEON MASTER WON!");
+    }
     // Reset the step counter of Mialyë
     players.mialye.stepsCount = players.mialye.maxSteps;
   } else if (currentPlayer.id === "regdar") {
@@ -71,10 +131,30 @@ const chooseNextPlayer = () => {
     // Reset the step counter of Regdar
     players.regdar.stepsCount = players.regdar.maxSteps;
   } else if (currentPlayer.id === "dungeonMaster") {
-    // Set Lidda as the next player after dungeonMaster
-    currentPlayer.classList.remove("current-player");
-    const lidda = document.querySelector("#lidda");
-    lidda.classList.add("current-player");
+    // Set Lidda as the next player after dungeonMaster if alive
+    if (document.querySelector("#lidda")) {
+      currentPlayer.classList.remove("current-player");
+      const lidda = document.querySelector("#lidda");
+      lidda.classList.add("current-player");
+      // Else set Jozian if alive
+    } else if (document.querySelector("#jozian")) {
+      currentPlayer.classList.remove("current-player");
+      const jozian = document.querySelector("#jozian");
+      jozian.classList.add("current-player");
+      // Else set Mialye if alive
+    } else if (document.querySelector("#mialye")) {
+      currentPlayer.classList.remove("current-player");
+      const mialye = document.querySelector("#mialye");
+      mialye.classList.add("current-player");
+      // Else set Regdar if alive
+    } else if (document.querySelector("#regdar")) {
+      currentPlayer.classList.remove("current-player");
+      const regdar = document.querySelector("#regdar");
+      regdar.classList.add("current-player");
+      // Else it means that the DUNGEON MASTER WON
+    } else {
+      throw alert("THE DUNGEON MASTER WON!");
+    }
   }
   // // Remove the previous player from the current-player class
   // currentPlayer.classList.remove("current-player");
@@ -107,7 +187,7 @@ document.querySelector("#btn-attack").addEventListener("click", () => {
   if (selectedPositionObject.health <= 0) {
     selectedPosition.id = "";
     selectedPosition.classList.remove("is-selected");
-    selectedPosition.classList.remove("is-filled");
+    selectedPosition.classList.remove("monster");
     selectedPosition.classList.add("dead-body");
   }
 });
