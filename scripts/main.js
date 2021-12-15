@@ -11,6 +11,17 @@ import {
   placeWallsOnMap,
   placeOtherMapElements,
 } from "./grid.js";
+import {
+  totalDistanceWithTarget,
+  totalDistanceWithSelected,
+} from "./motion.js";
+import {
+  weaponAttack,
+  spellAttack,
+  receiveDamage,
+  healPlayer,
+  monsterAttack,
+} from "./interract.js";
 
 /* ------------------------------------- Initialize gameboard, players, monsters and objects --------------------------------------- */
 
@@ -31,110 +42,72 @@ const chooseNextPlayer = () => {
 
   if (currentPlayer.id === "lidda") {
     // Set Jozian as the next player after Lidda
+    currentPlayer.classList.remove("current-player");
     const jozian = document.querySelector("#jozian");
     jozian.classList.add("current-player");
     // Reset the step counter of Lidda
     players.lidda.stepsCount = players.lidda.maxSteps;
   } else if (currentPlayer.id === "jozian") {
     // Set Mialyë as the next player after Jozian
+    currentPlayer.classList.remove("current-player");
     const mialye = document.querySelector("#mialye");
     mialye.classList.add("current-player");
     // Reset the step counter of Jozian
     players.jozian.stepsCount = players.jozian.maxSteps;
   } else if (currentPlayer.id === "mialye") {
     // Set Regdar as the next player after Mialyë
+    currentPlayer.classList.remove("current-player");
     const regdar = document.querySelector("#regdar");
     regdar.classList.add("current-player");
     // Reset the step counter of Mialyë
     players.mialye.stepsCount = players.mialye.maxSteps;
   } else if (currentPlayer.id === "regdar") {
-    /* --------------------------------------------------------- */
-    // Exécution de la fonction qui fait avancer certains monstres vers un héros choisi un hasard, en fonction de leur distance (si + 6, n'avancent pas)
-    /* --------------------------------------------------------- */
-    // Set Lidda as the next player after Regdar
-    const lidda = document.querySelector("#lidda");
-    lidda.classList.add("current-player");
+    // Set dungeonMaster as the next player after Regdar
+    currentPlayer.classList.remove("current-player");
+    const dungeonMaster = document.querySelector("#dungeonMaster");
+    dungeonMaster.classList.add("current-player");
+    // Trigger the function to have monsters move and attack
+    monsterAttack();
     // Reset the step counter of Regdar
     players.regdar.stepsCount = players.regdar.maxSteps;
+  } else if (currentPlayer.id === "dungeonMaster") {
+    // Set Lidda as the next player after dungeonMaster
+    currentPlayer.classList.remove("current-player");
+    const lidda = document.querySelector("#lidda");
+    lidda.classList.add("current-player");
   }
-  // Remove the previous player from the current-player class
-  currentPlayer.classList.remove("current-player");
+  // // Remove the previous player from the current-player class
+  // currentPlayer.classList.remove("current-player");
 };
 
-/* ---------------------------------------------- Attack and receive damage functions ---------------------------------------------- */
+/* ----------------------------------------- Intervals to update players stats every second ------------------------------------- */
 
-// Function that receives an attacker as its argument and returns the sum of rolling dice corresponding to the weapon
-
-const weaponAttack = (attacker) => {
-  let totalDamageCounter = 0;
-
-  const associatedDice = weapons[attacker.weapon].actionDice;
-  associatedDice.forEach((dieElement) => {
-    totalDamageCounter += throwDice(dice[dieElement]);
-  });
-
-  return totalDamageCounter;
-};
-
-// Function that receives an attacker as its argument and returns thesum of rolling dice corresponding to the spell
-
-const spellAttack = (caster) => {
-  let totalDamageCounter = 0;
-
-  const associatedDice = spells[caster.spell].actionDice;
-  associatedDice.forEach((dieElement) => {
-    totalDamageCounter += throwDice(dice[dieElement]);
-  });
-
-  caster.mana -= spells[caster.spell].cost;
-
-  return totalDamageCounter;
-};
-
-// Function that updates a player's or monster's health depending on the damage inflicted and the player's or monster's shield
-
-const receiveDamage = (playerOrMonster, damage) => {
-  if (damage >= playerOrMonster.health + playerOrMonster.shield) {
-    throw alert(`${playerOrMonster.name} is dead`);
-  } else if (damage > playerOrMonster.shield) {
-    playerOrMonster.health -= damage - playerOrMonster.shield;
-  }
-};
-
-// Function that updates a player's health depending on the damage inflicted by the trap or by a spell
-
-const receiveTrapOrSpellDamage = (playerOrMonster, damage) => {
-  if (damage >= playerOrMonster.health + playerOrMonster.shield) {
-    throw alert(`${playerOrMonster.name} is dead`);
-  } else {
-    playerOrMonster.health -= damage;
-  }
-};
-
-/* ------------------------------------------------------- Heal a player ------------------------------------------------------- */
-
-const healPlayer = (caster, player) => {
-  if (player.health <= 0)
-    throw alert(
-      `${player.name} is dead. You can only save him with a resurrection spell`
-    );
-
-  let totalHealCounter = 0;
-
-  const associatedDice = spells[caster.spell].actionDice;
-  associatedDice.forEach((dieElement) => {
-    totalHealCounter += throwDice(dice[dieElement]);
-  });
-
-  player.health += totalHealCounter;
-  caster.mana -= spells[caster.spell].cost;
-};
-
-/* ------------------------------------------------------- Speciall spells ------------------------------------------------------- */
-
-// Il faudra préparer les fonctions d'exécution pour le sort dismiss undeads et les sorts de découverte et de désomarçage de piège
+// setInterval(() => {
+//   console.log(`Vie de Lidda: ${players.lidda.health}`);
+//   console.log(`Vie de Jozian: ${players.jozian.health}`);
+//   console.log(`Vie de Mialyë: ${players.mialye.health}`);
+//   console.log(`Vie de Regdar: ${players.regdar.health}`);
+//   console.log(`Vie de Goblin: ${monsters.goblin.health}`);
+// }, 5000);
 
 /* ------------------------------------------------------- Event listeners ------------------------------------------------------- */
 
-const endOfTurnBtn = document.querySelector("#btn-end-of-turn");
-endOfTurnBtn.addEventListener("click", chooseNextPlayer);
+document
+  .querySelector("#btn-end-of-turn")
+  .addEventListener("click", chooseNextPlayer);
+
+document.querySelector("#btn-attack").addEventListener("click", () => {
+  let currentPlayerPosition = document.querySelector(".current-player");
+  let currentPlayerObject = players[currentPlayerPosition.id];
+  let selectedPosition = document.querySelector(".is-selected");
+  let selectedPositionObject = monsters[selectedPosition.id];
+
+  if (totalDistanceWithSelected() === 1)
+    receiveDamage(selectedPositionObject, weaponAttack(currentPlayerObject));
+  if (selectedPositionObject.health <= 0) {
+    selectedPosition.id = "";
+    selectedPosition.classList.remove("is-selected");
+    selectedPosition.classList.remove("is-filled");
+    selectedPosition.classList.add("dead-body");
+  }
+});

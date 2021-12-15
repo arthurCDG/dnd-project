@@ -8,19 +8,36 @@
     <link rel="stylesheet" href="./stylesheets/style.css">
     <script type="module" src="./scripts/main.js"></script>
 </head>
-<body>
+<body id="dungeonMaster">
         <div id="game-map"></div>
         <div id="interaction-panel">
             <div id="state">
-                C'est au tour de <span></span>
+                C'est au tour de <span>...</span>
             </div>
-            <div id="stat-panel"></div>
-                <div class="stat-sheet"></div>
-                <div class="stat-sheet"></div>
-                <div class="stat-sheet"></div>
-                <div class="stat-sheet"></div>
+            <div id="stat-panel">
+                <div class="stat-sheet">
+                    <span id="span-lidda">Lidda</span>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem, animi earum quasi enim amet voluptas quod vitae debitis natus doloremque, ex perspiciatis cumque culpa nihil, repellat eum reprehenderit similique sapiente.</p>
+                </div>
+                <div class="stat-sheet">
+                    <span id="span-jozian">Jozian</span>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem, animi earum quasi enim amet voluptas quod vitae debitis natus doloremque, ex perspiciatis cumque culpa nihil, repellat eum reprehenderit similique sapiente.</p>
+                </div>
+                <div class="stat-sheet">
+                    <span id="span-mialye">Mialyë</span>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem, animi earum quasi enim amet voluptas quod vitae debitis natus doloremque, ex perspiciatis cumque culpa nihil, repellat eum reprehenderit similique sapiente.</p>
+                </div>
+                <div class="stat-sheet">
+                    <span id="span-regdar">Regdar</span>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem, animi earum quasi enim amet voluptas quod vitae debitis natus doloremque, ex perspiciatis cumque culpa nihil, repellat eum reprehenderit similique sapiente.</p>
+                </div>
+            </div>
             <div id="control-panel">
-                <button id="btn-end-of-turn"></button>
+                <button id="btn-end-of-turn" class="btn">End of turn</button>
+                <button id="btn-attack" class="btn">Attack</button>
+                <button id="btn-heal" class="btn">Heal</button>
+                <button id="btn-search" class="btn">Search</button>
+                <button id="btn-open-the-door" class="btn">Open the door</button>
             </div>
         </div>
 </body>

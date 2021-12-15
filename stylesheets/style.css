@@ -24,33 +24,92 @@ body {
   grid-template-columns: repeat(27, 1fr);
 }
 
-/* .game-square {
-  border: 1px solid white;
-} */
+.game-square {
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 
 #interaction-panel {
   border: 1px solid black;
-  background-color: sandybrown;
-  width: 25vw;
+  background-image: url("../img/background/Statsheet-bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 25.5vw;
   height: 705px;
 }
 
+#state {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 #stat-panel {
-  border: 1px solid black;
+  height: 385px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .stat-sheet {
-  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  height: 50%;
+  width: 50%;
+}
+
+#span-lidda {
+  background-color: purple;
+  height: 20px;
+  color: whitesmoke;
+}
+
+#span-jozian {
+  background-color: blue;
+  height: 20px;
+  color: whitesmoke;
+}
+
+#span-mialye {
+  background-color: green;
+  height: 20px;
+  color: whitesmoke;
+}
+
+#span-regdar {
+  background-color: red;
+  height: 20px;
+  color: whitesmoke;
 }
 
 #control-panel {
-  border: 1px solid black;
-  height: 60%;
+  height: 200px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
-#btn-end-of-turn {
-  width: 100px;
+.btn {
+  width: 200px;
   height: 40px;
+}
+
+/* -------------------------- Interractions --------------------------- */
+
+.current-player {
+  border-bottom: 5px solid yellow;
+}
+
+.is-selected {
+  border: 3px solid red;
+  border-radius: 200px;
+}
+
+.dead-body {
+  background-image: url("../img/background/skeleton-transparent.svg");
 }
 
 /* ------------------ Monsters and players classes ------------------ */
@@ -71,31 +130,31 @@ body {
   background-image: url("../img/players_and_monsters/lidda.svg");
 }
 
-.goblin {
+#goblin {
   background-image: url("../img/players_and_monsters/goblin.svg");
 }
 
-.gnoll {
+#gnoll {
   background-image: url("../img/players_and_monsters/gnoll.svg");
 }
 
-.ogre {
+#ogre {
   background-image: url("../img/players_and_monsters/ogre.svg");
 }
 
-.troll {
+#troll {
   background-image: url("../img/players_and_monsters/troll.svg");
 }
 
-.skeleton {
+#skeleton {
   background-image: url("../img/players_and_monsters/skeleton.svg");
 }
 
-.specter {
+#specter {
   background-image: url("../img/players_and_monsters/specter.svg");
 }
 
-.lich-king {
+#lich-king {
   background-image: url("../img/players_and_monsters/lichKing.svg");
 }
 
@@ -121,24 +180,12 @@ body {
   background-image: url("../img/map_elements/open-chest.svg");
 }
 
-.active-hole-trap {
-  background-image: url("../img/map_elements/traps/hole-trap.svg");
-}
-
 .inactive-hole-trap {
   background-image: url("../img/map_elements/traps/inactive-hole-trap.svg");
 }
 
-.active-fireball-trap {
-  background-image: url("../img/map_elements/traps/fireball-trap.svg");
-}
-
 .inactive-fireball-trap {
   background-image: url("../img/map_elements/traps/inactive-fireball-trap.svg");
-}
-
-.active-poison-trap {
-  background-image: url("../img/map_elements/traps/poison-trap.svg");
 }
 
 .inactive-poison-trap {

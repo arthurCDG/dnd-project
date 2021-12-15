@@ -7,7 +7,10 @@ export const monsters = {
     shield: 1,
     maxSteps: 5,
     stepsCount: 5,
-    weapon: "short_axe",
+    maxAttackAction: 1,
+    attackActionCount: 1,
+    weapon: "lich_ward",
+    isAlive: true,
   },
 
   goblin: {
@@ -18,7 +21,10 @@ export const monsters = {
     shield: 1,
     maxSteps: 6,
     stepsCount: 6,
-    weapon: "dagger",
+    maxAttackAction: 1,
+    attackActionCount: 1,
+    weapon: "lich_ward",
+    isAlive: true,
   },
 
   lichKing: {
@@ -29,7 +35,10 @@ export const monsters = {
     shield: 3,
     maxSteps: 5,
     stepsCount: 5,
+    maxAttackAction: 1,
+    attackActionCount: 1,
     weapon: "lich_ward",
+    isAlive: true,
   },
 
   ogre: {
@@ -40,7 +49,10 @@ export const monsters = {
     shield: 2,
     maxSteps: 4,
     stepsCount: 4,
+    maxAttackAction: 1,
+    attackActionCount: 1,
     weapon: "heavy_club",
+    isAlive: true,
   },
 
   skeleton: {
@@ -51,7 +63,10 @@ export const monsters = {
     shield: 2,
     maxSteps: 5,
     stepsCount: 5,
+    maxAttackAction: 1,
+    attackActionCount: 1,
     weapon: "fantomatic_sword",
+    isAlive: true,
   },
 
   specter: {
@@ -62,7 +77,10 @@ export const monsters = {
     shield: 2,
     maxSteps: 5,
     stepsCount: 5,
+    maxAttackAction: 1,
+    attackActionCount: 1,
     weapon: "fantomatic_sword",
+    isAlive: true,
   },
 
   troll: {
@@ -73,6 +91,9 @@ export const monsters = {
     shield: 3,
     maxSteps: 3,
     stepsCount: 3,
+    maxAttackAction: 1,
+    attackActionCount: 1,
     weapon: "heavy_club",
+    isAlive: true,
   },
 };

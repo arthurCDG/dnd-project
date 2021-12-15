@@ -21,28 +21,28 @@ export const placePlayersOnMap = () => {
   const liddaSquare = document.querySelector("[data-x='1'][data-y='1']");
   liddaSquare.id = "lidda";
   liddaSquare.classList.add("current-player");
-  liddaSquare.classList.add("is-filled");
+  liddaSquare.classList.add("hero");
   const jozianSquare = document.querySelector("[data-x='1'][data-y='2']");
   jozianSquare.id = "jozian";
-  jozianSquare.classList.add("is-filled");
+  jozianSquare.classList.add("hero");
   const mialyeSquare = document.querySelector("[data-x='1'][data-y='3']");
   mialyeSquare.id = "mialye";
-  mialyeSquare.classList.add("is-filled");
+  mialyeSquare.classList.add("hero");
   const regdarSquare = document.querySelector("[data-x='1'][data-y='4']");
   regdarSquare.id = "regdar";
-  regdarSquare.classList.add("is-filled");
+  regdarSquare.classList.add("hero");
 };
 
 export const placeMonstersOnMap = () => {
   const goblinSquare = document.querySelector("[data-x='8'][data-y='2']");
-  goblinSquare.classList.add("goblin");
-  goblinSquare.classList.add("is-filled");
+  goblinSquare.id = "goblin";
+  goblinSquare.classList.add("monster");
   const gnollSquare = document.querySelector("[data-x='9'][data-y='3']");
-  gnollSquare.classList.add("gnoll");
-  gnollSquare.classList.add("is-filled");
+  gnollSquare.id = "gnoll";
+  gnollSquare.classList.add("monster");
   const ogreSquare = document.querySelector("[data-x='16'][data-y='1']");
-  ogreSquare.classList.add("ogre");
-  ogreSquare.classList.add("is-filled");
+  ogreSquare.id = "ogre";
+  ogreSquare.classList.add("monster");
 };
 
 export const placeWallsOnMap = () => {
