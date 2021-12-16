@@ -59,13 +59,27 @@ const removeDeadHero = (deadHeroHTMLElement) => {
 
 /* ------------------------------------------------------ Turned-based system ------------------------------------------------------ */
 
+const resetAllMonstersAttackCount = () => {
+  monsters.goblin.attackActionCount === 1;
+  monsters.gnoll.attackActionCount === 1;
+  monsters.ogre.attackActionCount === 1;
+  monsters.troll.attackActionCount === 1;
+  monsters.skeleton.attackActionCount === 1;
+  monsters.specter.attackActionCount === 1;
+  monsters.lichKing.attackActionCount === 1;
+};
+
 const playDungeonMasterTurn = () => {
+  // Reset all monsters' attack counts
+  resetAllMonstersAttackCount();
   // Trigger the function to have monsters attack players a first time
   monsterAttack();
   // Trigger the function to see if some heroes are dead
   removeDeadHero(isThereADeadHero());
   // Trigger the  function that moves monsters if within range
   moveMonsters();
+  // Reset all monsters' attack counts one more time (for those who will attack on the second trys)
+  resetAllMonstersAttackCount();
   // Trigger the function to have monsters attack players a second time (for those who havent't already attacked)
   monsterAttack();
   // Trigger the function to see if some heroes are dead

@@ -77,8 +77,6 @@ export const monsterAttack = () => {
     currentPlayer.classList.remove("current-player");
     monster.classList.add("current-player");
     let monsterObject = monsters[document.querySelector(".current-player").id];
-    // Au début de la boucle, remettre le compteur d'attaque du monstre à zéro
-    monsterObject.attackActionCount === 1;
     // Boucle sur chaque héros (chaque héros devient la cible fictivement)
     allLivingHeroes.forEach((hero) => {
       hero.classList.add("is-selected");
@@ -86,7 +84,7 @@ export const monsterAttack = () => {
       // Pour chaque héro ciblé, à quelle distance du monstre est-il ?
       let distance = totalDistanceWithSelected();
       // Si le monstre est sur une case adjacente est peut attaquer (son compteur n'est pas à 0) alors il attaque
-      if (distance <= 1 && monsterObject.attackActionCount === 1) {
+      if (distance <= 1 && monsterObject.attackActionCount > 0) {
         receiveDamage(heroObject, weaponAttack(monsterObject));
         monsterObject.attackActionCount--;
       }
@@ -99,8 +97,6 @@ export const monsterAttack = () => {
         hero.classList.remove("is-selected");
       }
     });
-    // Au début de la boucle, remettre le compteur d'attaque du monstre à zéro
-    monsterObject.attackActionCount === 1;
   });
   // A la fin de toutes les boucles monstres, retirer le statut de current player au dernier monstre et le réattribuer au maître du donjon
   let currentPlayer = document.querySelector(".current-player");
