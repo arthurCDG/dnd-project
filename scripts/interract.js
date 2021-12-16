@@ -66,8 +66,20 @@ export const healPlayer = (caster, player) => {
 
 /* ------------------------------------------------------- Monster attack ------------------------------------------------------- */
 
+// Function to make sure monsters always start their turn with 1 attack token and nothing more
+const resetAllMonstersAttackCount = () => {
+  monsters.goblin.attackActionCount === 1;
+  monsters.gnoll.attackActionCount === 1;
+  monsters.ogre.attackActionCount === 1;
+  monsters.troll.attackActionCount === 1;
+  monsters.skeleton.attackActionCount === 1;
+  monsters.specter.attackActionCount === 1;
+  monsters.lichKing.attackActionCount === 1;
+};
+
 // Faire un querySelectorAll de tous les ID de monstre pour obtenir tous ceux encore vivants
 export const monsterAttack = () => {
+  resetAllMonstersAttackCount();
   let allLivingMonsters = document.querySelectorAll(".monster");
   let allLivingHeroes = document.querySelectorAll(".hero");
   //   Si je veux utiliser totalDistanceWithSelected, je dois faire une boucle où chaque monstre va être current-player
@@ -78,25 +90,24 @@ export const monsterAttack = () => {
     monster.classList.add("current-player");
     let monsterObject = monsters[document.querySelector(".current-player").id];
     // Boucle sur chaque héros (chaque héros devient la cible fictivement)
-    allLivingHeroes.forEach((hero) => {
-      hero.classList.add("is-selected");
+    for (let i = 0; i < allLivingHeroes.length; i++) {
+      allLivingHeroes[i].classList.add("is-selected");
       let heroObject = players[document.querySelector(".is-selected").id];
       // Pour chaque héro ciblé, à quelle distance du monstre est-il ?
       let distance = totalDistanceWithSelected();
       // Si le monstre est sur une case adjacente est peut attaquer (son compteur n'est pas à 0) alors il attaque
-      if (distance <= 1 && monsterObject.attackActionCount > 0) {
+      if (distance <= 1) {
         receiveDamage(heroObject, weaponAttack(monsterObject));
-        monsterObject.attackActionCount--;
       }
       // Gérer le cas où le coup est fatal pour le héros
       if (heroObject.health <= 0) {
         heroObject.isAlive = false;
-        hero.classList.add("to-delete");
-        hero.classList.remove("is-selected");
+        allLivingHeroes[i].classList.add("to-delete");
+        allLivingHeroes[i].classList.remove("is-selected");
       } else {
-        hero.classList.remove("is-selected");
+        allLivingHeroes[i].classList.remove("is-selected");
       }
-    });
+    }
   });
   // A la fin de toutes les boucles monstres, retirer le statut de current player au dernier monstre et le réattribuer au maître du donjon
   let currentPlayer = document.querySelector(".current-player");

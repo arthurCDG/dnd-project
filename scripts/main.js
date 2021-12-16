@@ -59,27 +59,9 @@ const removeDeadHero = (deadHeroHTMLElement) => {
 
 /* ------------------------------------------------------ Turned-based system ------------------------------------------------------ */
 
-const resetAllMonstersAttackCount = () => {
-  monsters.goblin.attackActionCount === 1;
-  monsters.gnoll.attackActionCount === 1;
-  monsters.ogre.attackActionCount === 1;
-  monsters.troll.attackActionCount === 1;
-  monsters.skeleton.attackActionCount === 1;
-  monsters.specter.attackActionCount === 1;
-  monsters.lichKing.attackActionCount === 1;
-};
-
 const playDungeonMasterTurn = () => {
-  // Reset all monsters' attack counts
-  resetAllMonstersAttackCount();
-  // Trigger the function to have monsters attack players a first time
-  monsterAttack();
-  // Trigger the function to see if some heroes are dead
-  removeDeadHero(isThereADeadHero());
   // Trigger the  function that moves monsters if within range
   moveMonsters();
-  // Reset all monsters' attack counts one more time (for those who will attack on the second trys)
-  resetAllMonstersAttackCount();
   // Trigger the function to have monsters attack players a second time (for those who havent't already attacked)
   monsterAttack();
   // Trigger the function to see if some heroes are dead
@@ -217,18 +199,33 @@ const chooseNextPlayer = () => {
 
 /* ----------------------------------------- Intervals to update players stats every second ------------------------------------- */
 
-setInterval(() => {
-  console.log(`Vie de Lidda: ${players.lidda.health}`);
-  console.log(`Statut Lidda: ${players.lidda.isAlive}`);
-  // console.log(`Vie de Jozian: ${players.jozian.health}`);
-  // console.log(`Statut Jozian: ${players.jozian.isAlive}`);
-  // console.log(`Vie de Mialyë: ${players.mialye.health}`);
-  // console.log(`Vie de Regdar: ${players.regdar.health}`);
-  console.log(`attackActionCount Goblin: ${monsters.goblin.attackActionCount}`);
-  console.log(`attackActionCount Gnoll: ${monsters.gnoll.attackActionCount}`);
-}, 2000);
+// setInterval(() => {
+//   console.log(`Vie de Lidda: ${players.lidda.health}`);
+//   console.log(`Vie de Jozian: ${players.jozian.health}`);
+//   console.log(`Vie de Mialyë: ${players.mialye.health}`);
+//   console.log(`Vie de Regdar: ${players.regdar.health}`);
+// }, 2000);
 
 /* ------------------------------------------------------- Event listeners ------------------------------------------------------- */
+
+window.addEventListener("load", () => {
+  let textContainer = document.querySelector("#state p");
+  let text =
+    "Nos quatre héros viennent de pénétrer dans le donjon. Leur objectif : obtenir la couronne du roi liche. Mais attention, ils devront faire face à des monstres sanguinaires et des pièges vicieux sur leur passage.";
+
+  let i = 0;
+  let speed = 50;
+
+  function typeWriter() {
+    if (i < text.length) {
+      textContainer.innerText += text.charAt(i) + " ";
+      i++;
+      setTimeout(typeWriter, speed);
+    }
+  }
+
+  typeWriter();
+});
 
 document
   .querySelector("#btn-end-of-turn")

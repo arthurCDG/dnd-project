@@ -150,107 +150,114 @@ export const moveMonsters = () => {
   let allLivingMonsters = document.querySelectorAll(".monster");
   let allLivingHeroes = document.querySelectorAll(".hero");
   // Boucle sur tous les monstres
-  allLivingMonsters.forEach((monster) => {
+  for (let i = 0; i < allLivingMonsters.length; i++) {
     // Boucle sur chaque monstre (chaque monstre devient le current-player fictivement)
     let currentPlayer = document.querySelector(".current-player");
     currentPlayer.classList.remove("current-player");
-    monster.classList.add("current-player");
+    allLivingMonsters[i].classList.add("current-player");
     let monsterObject = monsters[document.querySelector(".current-player").id];
-    // Boucle sur chaque héros (chaque héros devient la cible fictivement)
-    allLivingHeroes.forEach((hero) => {
+    // Boucle sur chaque héros
+    for (let j = 0; j < allLivingHeroes.length; j++) {
       // Sélectionner le héro à chaque fois
-      hero.classList.add("is-selected");
+      allLivingHeroes[j].classList.add("is-selected");
       // Pour chaque héro ciblé, à quelle distance du monstre est-il ?
       let distance = totalDistanceWithSelected();
       // Si le monstre est à portée, avancer (sauf si attackActionCount === 0 ????)
-      if (
-        distance <= monsterObject.stepsCount &&
-        distance >= 2 &&
-        monsterObject.attackActionCount &&
-        !document.querySelector(`#${monsterObject.name}`)
-      ) {
+      if (distance <= monsterObject.stepsCount && distance >= 2) {
         // Check if the square at x+1 but same y is free, if so move the monster there
-        let xPlusOne = Number(hero.getAttribute("data-x")) + 1;
-        let ySquareOfHero = Number(hero.getAttribute("data-y"));
+        let xPlusOneAttr =
+          Number(allLivingHeroes[j].getAttribute("data-x")) + 1;
+        let yAttrOfHero = Number(allLivingHeroes[j].getAttribute("data-y"));
         let xPlusOneSquareOfHero = document.querySelector(
-          `[data-x='${xPlusOne}'][data-y='${ySquareOfHero}']`
+          `[data-x='${xPlusOneAttr}'][data-y='${yAttrOfHero}']`
         );
         // Check if the square at x-1 but same y is free, if so move the monster there
-        let xMinusOne = Number(hero.getAttribute("data-x")) - 1;
+        let xMinusOneAttr =
+          Number(allLivingHeroes[j].getAttribute("data-x")) - 1;
         let xMinusOneSquareOfHero = document.querySelector(
-          `[data-x='${xMinusOne}'][data-y='${ySquareOfHero}']`
+          `[data-x='${xMinusOneAttr}'][data-y='${yAttrOfHero}']`
         );
         // Check if the square at y+1 but same x is free, if so move the monster there
-        let yPlusOne = Number(hero.getAttribute("data-y")) + 1;
-        let xSquareOfHero = Number(hero.getAttribute("data-x"));
+        let yPlusOneAttr =
+          Number(allLivingHeroes[j].getAttribute("data-y")) + 1;
+        let xAttrOfHero = Number(allLivingHeroes[j].getAttribute("data-x"));
         let yPlusOneSquareOfHero = document.querySelector(
-          `[data-x='${yPlusOne}'][data-y='${xSquareOfHero}']`
+          `[data-x='${yPlusOneAttr}'][data-y='${xAttrOfHero}']`
         );
         // Check if the square at y-1 but same x is free, if so move the monster there
-        let yMinusOne = Number(hero.getAttribute("data-y")) - 1;
+        let yMinusOneAttr =
+          Number(allLivingHeroes[j].getAttribute("data-y")) - 1;
         let yMinusOneSquareOfHero = document.querySelector(
-          `[data-x='${yMinusOne}'][data-y='${xSquareOfHero}']`
+          `[data-x='${yMinusOneAttr}'][data-y='${xAttrOfHero}']`
         );
 
+        console.log(xPlusOneSquareOfHero);
+        console.log(typeof xPlusOneSquareOfHero.id);
+
         if (
-          !xPlusOneSquareOfHero.id ||
-          !xPlusOneSquareOfHero.classList.contains("hero") ||
-          !xPlusOneSquareOfHero.classList.contains("monster") ||
-          !xPlusOneSquareOfHero.classList.contains("wall") ||
-          !xPlusOneSquareOfHero.classList.contains("chest") ||
+          xPlusOneSquareOfHero.id !== undefined &&
+          !xPlusOneSquareOfHero.classList.contains("hero") &&
+          !xPlusOneSquareOfHero.classList.contains("monster") &&
+          !xPlusOneSquareOfHero.classList.contains("wall") &&
+          !xPlusOneSquareOfHero.classList.contains("opened-chest") &&
+          !xPlusOneSquareOfHero.classList.contains("locked-chest") &&
           !xPlusOneSquareOfHero.classList.contains("door")
         ) {
           xPlusOneSquareOfHero.classList.add("monster");
           xPlusOneSquareOfHero.classList.add("current-player");
           xPlusOneSquareOfHero.id = `${monsterObject.name.toLowerCase()}`;
-          monster.classList.remove("monster");
-          monster.classList.remove("current-player");
-          monster.id = "";
+          allLivingMonsters[i].classList.remove("monster");
+          allLivingMonsters[i].classList.remove("current-player");
+          allLivingMonsters[i].id = "";
         } else if (
-          !xMinusOneSquareOfHero.id ||
-          !xMinusOneSquareOfHero.classList.contains("hero") ||
-          !xMinusOneSquareOfHero.classList.contains("monster") ||
-          !xMinusOneSquareOfHero.classList.contains("wall") ||
-          !xMinusOneSquareOfHero.classList.contains("chest") ||
+          xMinusOneSquareOfHero.id !== undefined &&
+          !xMinusOneSquareOfHero.classList.contains("hero") &&
+          !xMinusOneSquareOfHero.classList.contains("monster") &&
+          !xMinusOneSquareOfHero.classList.contains("wall") &&
+          !xMinusOneSquareOfHero.classList.contains("opened-chest") &&
+          !xMinusOneSquareOfHero.classList.contains("locked-chest") &&
           !xMinusOneSquareOfHero.classList.contains("door")
         ) {
           xMinusOneSquareOfHero.classList.add("monster");
           xMinusOneSquareOfHero.classList.add("current-player");
           xMinusOneSquareOfHero.id = `${monsterObject.name.toLowerCase()}`;
-          monster.classList.remove("monster");
-          monster.classList.remove("current-player");
-          monster.id = "";
+          allLivingMonsters[i].classList.remove("monster");
+          allLivingMonsters[i].classList.remove("current-player");
+          allLivingMonsters[i].id = "";
         } else if (
-          !yPlusOneSquareOfHero.id ||
-          !yPlusOneSquareOfHero.classList.contains("hero") ||
-          !yPlusOneSquareOfHero.classList.contains("monster") ||
-          !yPlusOneSquareOfHero.classList.contains("wall") ||
-          !yPlusOneSquareOfHero.classList.contains("chest") ||
+          yPlusOneSquareOfHero.id !== undefined &&
+          !yPlusOneSquareOfHero.classList.contains("hero") &&
+          !yPlusOneSquareOfHero.classList.contains("monster") &&
+          !yPlusOneSquareOfHero.classList.contains("wall") &&
+          !yPlusOneSquareOfHero.classList.contains("opened-chest") &&
+          !yPlusOneSquareOfHero.classList.contains("locked-chest") &&
           !yPlusOneSquareOfHero.classList.contains("door")
         ) {
           yPlusOneSquareOfHero.classList.add("monster");
           yPlusOneSquareOfHero.classList.add("current-player");
           yPlusOneSquareOfHero.id = `${monsterObject.name.toLowerCase()}`;
-          monster.classList.remove("monster");
-          monster.classList.remove("current-player");
-          monster.id = "";
+          allLivingMonsters[i].classList.remove("monster");
+          allLivingMonsters[i].classList.remove("current-player");
+          allLivingMonsters[i].id = "";
         } else if (
-          !yMinusOneSquareOfHero.id ||
-          !yMinusOneSquareOfHero.classList.contains("hero") ||
-          !yMinusOneSquareOfHero.classList.contains("monster") ||
-          !yMinusOneSquareOfHero.classList.contains("wall") ||
-          !yMinusOneSquareOfHero.classList.contains("chest") ||
+          yMinusOneSquareOfHero.id !== undefined &&
+          !yMinusOneSquareOfHero.classList.contains("hero") &&
+          !yMinusOneSquareOfHero.classList.contains("monster") &&
+          !yMinusOneSquareOfHero.classList.contains("wall") &&
+          !yMinusOneSquareOfHero.classList.contains("opened-chest") &&
+          !yMinusOneSquareOfHero.classList.contains("locked-chest") &&
           !yMinusOneSquareOfHero.classList.contains("door")
         ) {
           yMinusOneSquareOfHero.classList.add("monster");
           yMinusOneSquareOfHero.classList.add("current-player");
           yMinusOneSquareOfHero.id = `${monsterObject.name.toLowerCase()}`;
-          monster.classList.remove("monster");
-          monster.classList.remove("current-player");
-          monster.id = "";
+          allLivingMonsters[i].classList.remove("monster");
+          allLivingMonsters[i].classList.remove("current-player");
+          allLivingMonsters[i].id = "";
         }
+        break;
       }
-      hero.classList.remove("is-selected");
-    });
-  });
+      allLivingHeroes[j].classList.remove("is-selected");
+    }
+  }
 };
