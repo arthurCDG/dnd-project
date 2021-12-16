@@ -1,6 +1,7 @@
 export const players = {
   jozian: {
     name: "Jozian",
+    maxHealth: 9,
     health: 9,
     mana: 7,
     skills: ["dismiss_undeads"],
@@ -16,6 +17,7 @@ export const players = {
   regdar: {
     name: "Regdar",
     health: 15,
+    maxHealth: 15,
     mana: null,
     skills: [],
     maxSteps: 4,
@@ -30,6 +32,7 @@ export const players = {
   lidda: {
     name: "Lidda",
     health: 9,
+    maxHealth: 9,
     mana: 4,
     skills: ["sneaky_attack", "look_for_and_dismiss_traps"],
     maxSteps: 6,
@@ -44,6 +47,7 @@ export const players = {
   mialye: {
     name: "Mialye",
     health: 9,
+    maxHealth: 9,
     mana: 9,
     skills: [],
     maxSteps: 5,

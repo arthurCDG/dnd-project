@@ -7,7 +7,7 @@ export const monsters = {
     shield: 1,
     maxSteps: 5,
     stepsCount: 5,
-    weapon: "lich_ward",
+    weapon: "dagger",
     isAlive: true,
   },
 
@@ -19,7 +19,7 @@ export const monsters = {
     shield: 1,
     maxSteps: 6,
     stepsCount: 6,
-    weapon: "lich_ward",
+    weapon: "short_axe",
     isAlive: true,
   },
 
@@ -55,6 +55,18 @@ export const monsters = {
     shield: 2,
     maxSteps: 5,
     stepsCount: 5,
+    weapon: "fantomatic_sword",
+    isAlive: true,
+  },
+
+  slime: {
+    name: "Slime",
+    health: 12,
+    mana: null,
+    skills: null,
+    shield: 0,
+    maxSteps: 2,
+    stepsCount: 2,
     weapon: "fantomatic_sword",
     isAlive: true,
   },

@@ -195,30 +195,65 @@ const chooseNextPlayer = () => {
       throw alert("THE DUNGEON MASTER WON!");
     }
   }
+  // Remove the target
+  if (document.querySelector(".is-selected")) {
+    let selected = document.querySelector(".is-selected");
+    selected.classList.remove("is-selected");
+  }
 };
 
 /* ----------------------------------------- Intervals to update players stats every second ------------------------------------- */
 
-// setInterval(() => {
-//   console.log(`Vie de Lidda: ${players.lidda.health}`);
-//   console.log(`Vie de Jozian: ${players.jozian.health}`);
-//   console.log(`Vie de Mialyë: ${players.mialye.health}`);
-//   console.log(`Vie de Regdar: ${players.regdar.health}`);
-// }, 2000);
+setInterval(() => {
+  document.querySelector("#life-of-lidda").innerHTML = players.lidda.health;
+  document.querySelector("#mana-of-lidda").innerHTML = players.lidda.mana;
+  document.querySelector("#steps-of-lidda").innerHTML =
+    players.lidda.stepsCount;
+  document.querySelector("#shield-of-lidda").innerHTML = players.lidda.shield;
+  document.querySelector("#inventory-of-lidda").innerHTML =
+    players.lidda.inventory;
+
+  document.querySelector("#life-of-jozian").innerHTML = players.jozian.health;
+  document.querySelector("#mana-of-jozian").innerHTML = players.jozian.mana;
+  document.querySelector("#steps-of-jozian").innerHTML =
+    players.jozian.stepsCount;
+  document.querySelector("#shield-of-jozian").innerHTML = players.jozian.shield;
+  document.querySelector("#inventory-of-jozian").innerHTML =
+    players.jozian.inventory;
+
+  document.querySelector("#life-of-mialye").innerHTML = players.mialye.health;
+  document.querySelector("#mana-of-mialye").innerHTML = players.mialye.mana;
+  document.querySelector("#steps-of-mialye").innerHTML =
+    players.mialye.stepsCount;
+  document.querySelector("#shield-of-mialye").innerHTML = players.mialye.shield;
+  document.querySelector("#inventory-of-mialye").innerHTML =
+    players.mialye.inventory;
+
+  document.querySelector("#life-of-regdar").innerHTML = players.regdar.health;
+  document.querySelector("#mana-of-regdar").innerHTML = players.regdar.mana;
+  document.querySelector("#steps-of-regdar").innerHTML =
+    players.regdar.stepsCount;
+  document.querySelector("#shield-of-regdar").innerHTML = players.regdar.shield;
+  document.querySelector("#inventory-of-regdar").innerHTML =
+    players.regdar.inventory;
+}, 50);
+
+// Choses à update: vie, mana, pas, shield (ou alors le mettre en image fixe avec un logo bouclier ?) et inventaire !
+// Ainsi que arme et spell actif ?????
 
 /* ------------------------------------------------------- Event listeners ------------------------------------------------------- */
 
 window.addEventListener("load", () => {
-  let textContainer = document.querySelector("#state p");
-  let text =
-    "Nos quatre héros viennent de pénétrer dans le donjon. Leur objectif : obtenir la couronne du roi liche. Mais attention, ils devront faire face à des monstres sanguinaires et des pièges vicieux sur leur passage.";
+  let textContainer = document.querySelector("#state span");
+  let text = "DUNGEONS-&-DRAGONS";
 
   let i = 0;
   let speed = 50;
 
   function typeWriter() {
     if (i < text.length) {
-      textContainer.innerText += text.charAt(i) + " ";
+      if (text[i] === ".") textContainer.innerText += "";
+      else textContainer.innerText += ` ${text[i]}`;
       i++;
       setTimeout(typeWriter, speed);
     }
@@ -246,3 +281,31 @@ document.querySelector("#btn-attack").addEventListener("click", () => {
     selectedPosition.classList.add("dead-body");
   }
 });
+
+document.querySelector("#btn-search").addEventListener("click", () => {
+  // Mettre ici la fonction de search random sur les coffres
+});
+
+document.querySelector(".key1").addEventListener("click", () => {
+  document.querySelector(".door1").classList.remove("door1");
+  document.querySelector(".key1").classList.remove("key1");
+});
+
+document.querySelector(".key2").addEventListener("click", () => {
+  document.querySelector(".door2").classList.remove("door1");
+  document.querySelector(".key2").classList.remove("key1");
+});
+
+/* ---------------------------------------------------------- Render dice ---------------------------------------------------------- */
+
+// Sélectionner l'image element 1 et l'image element 2
+// let dice1 = document.createElement('img');
+// let dice2 = document.createElement('img');
+///--------> Il faut ajouter des fichiers image source à chaque face du dé
+// dice1.src = ????
+// dice2.src = ????
+let testtt = document.querySelector(".test");
+// En fonction du résultat de throwDice, choisir l'image à affichher dans l'image 1 et 2
+// dice1.src = "../img/dice-images/0_2.png";
+// dice2.src = "../img/dice-images/2_2.png";
+testtt.src = "../img/dice-roll-hand.gif";
