@@ -1,12 +1,12 @@
 export const dice = {
-  yellowDie: [0, 0, 0, 1, 1, 1],
-  orangeDie: [0, 0, 1, 1, 2, 2],
-  redDie: [0, 1, 2, 2, 3, 3],
-  purpleDie: [1, 2, 2, 3, 3, 3],
+  yellowDie: [0, 0, 1, 1, 1, 1],
+  orangeDie: [1, 2, 1, 2, 1, 1],
+  redDie: [3, 0, 1, 2, 2, 2],
+  purpleDie: [2, 3, 2, 3, 2, 2],
   starDie: [0, 0, 0, 1, 1, 1],
-  discoverTrapsDie: [0, 0, 1, 1, 2, 2],
-  dismissTrapsDie: [0, 0, 1, 1, 2, 2],
-  dismissUndeadsDie: [0, 0, 1, 1, 2, 2],
+  discoverTrapsDie: [1, 2, 0, 0, 1, 0],
+  dismissTrapsDie: [0, 1, 1, 1, 1, 1],
+  dismissUndeadsDie: [0, 2, 1, 3, 0, 0],
 };
 
 export const throwDice = (die) => {

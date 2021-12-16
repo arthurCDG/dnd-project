@@ -1,5 +1,6 @@
 import { players } from "./players.js";
 import { traps } from "./traps.js";
+import { monsters } from "./monsters.js";
 
 /* ------------------------------------ Get the players object (from the players.js file) ----------------------------------------------- */
 
@@ -38,23 +39,29 @@ export const totalDistanceWithTarget = (target) => {
 /* --------------------------- Calculate the total distance between current player and its selected target ------------------------------ */
 
 export const totalDistanceWithSelected = () => {
-  let xCoordOfCurrentPlayer = document
-    .querySelector(".current-player")
-    .getAttribute("data-x");
-  let yCoordOfCurrentPlayer = document
-    .querySelector(".current-player")
-    .getAttribute("data-y");
-  let xCoordOfSelected = document
-    .querySelector(".is-selected")
-    .getAttribute("data-x");
-  let yCoordOfSelected = document
-    .querySelector(".is-selected")
-    .getAttribute("data-y");
-
-  return (
-    Math.abs(xCoordOfCurrentPlayer - xCoordOfSelected) +
-    Math.abs(yCoordOfCurrentPlayer - yCoordOfSelected)
+  let xCoordOfCurrentPlayer = Number(
+    document.querySelector(".current-player").getAttribute("data-x")
   );
+  let yCoordOfCurrentPlayer = Number(
+    document.querySelector(".current-player").getAttribute("data-y")
+  );
+  let xCoordOfSelected = Number(
+    document.querySelector(".is-selected").getAttribute("data-x")
+  );
+  let yCoordOfSelected = Number(
+    document.querySelector(".is-selected").getAttribute("data-y")
+  );
+
+  if (xCoordOfCurrentPlayer - xCoordOfSelected === 0) {
+    return Math.abs(yCoordOfCurrentPlayer - yCoordOfSelected);
+  } else if (yCoordOfCurrentPlayer - yCoordOfSelected === 0) {
+    return Math.abs(xCoordOfCurrentPlayer - xCoordOfSelected);
+  } else {
+    return (
+      Math.abs(xCoordOfCurrentPlayer - xCoordOfSelected) +
+      Math.abs(yCoordOfCurrentPlayer - yCoordOfSelected)
+    );
+  }
 };
 
 /* -------- Check whether a player is allowed to move on the targeted square on the gameboard (compare distance with remaining steps) ------ */
@@ -134,4 +141,55 @@ export const playerMotion = (event) => {
       newPosition.classList.add("inactive-poison-trap");
     }
   }
+};
+
+/* -------------------- Move a monster if it is withing reach of a player (but not if can already attack)  ------------------------------ */
+
+export const moveMonsters = () => {
+  // QuerySelectorAllMonstersAlive and heroesalive
+  let allLivingMonsters = document.querySelectorAll(".monster");
+  let allLivingHeroes = document.querySelectorAll(".hero");
+  // Boucle sur tous les monstres
+  allLivingMonsters.forEach((monster) => {
+    // Boucle sur chaque monstre (chaque monstre devient le current-player fictivement)
+    let currentPlayer = document.querySelector(".current-player");
+    currentPlayer.classList.remove("current-player");
+    monster.classList.add("current-player");
+    let monsterObject = monsters[document.querySelector(".current-player").id];
+    // Boucle sur chaque héros (chaque héros devient la cible fictivement)
+    allLivingHeroes.forEach((hero) => {
+      // Sélectionner le héro à chaque fois
+      hero.classList.add("is-selected");
+      // Pour chaque héro ciblé, à quelle distance du monstre est-il ?
+      let distance = totalDistanceWithSelected();
+      // Si le monstre est à portée, avancer (sauf si attackActionCount === 0 ????)
+      if (distance <= monsterObject.stepsCount && distance >= 2) {
+        // Check if the square at x+1 but same y is free, if so move the monster there
+        let xPlusOne = Number(hero.getAttribute("data-x")) + 1;
+        let ySquareOfHero = Number(hero.getAttribute("data-y"));
+        let xPlusOneSquareOfHero = document.querySelector(
+          `[data-x='${xPlusOne}'][data-y='${ySquareOfHero}']`
+        );
+
+        if (
+          !xPlusOneSquareOfHero.id &&
+          !xPlusOneSquareOfHero.classList.contains(
+            "hero",
+            "monster",
+            "wall",
+            "chest",
+            "door"
+          )
+        ) {
+          xPlusOneSquareOfHero.classList.add("monster");
+          xPlusOneSquareOfHero.classList.add("current-player");
+          xPlusOneSquareOfHero.id = `${monsterObject.name.toLowerCase()}`;
+          monster.classList.remove("monster");
+          monster.classList.remove("current-player");
+          monster.id = "";
+        }
+      }
+      hero.classList.remove("is-selected");
+    });
+  });
 };

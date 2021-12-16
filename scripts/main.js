@@ -14,6 +14,7 @@ import {
 import {
   totalDistanceWithTarget,
   totalDistanceWithSelected,
+  moveMonsters,
 } from "./motion.js";
 import {
   weaponAttack,
@@ -35,7 +36,41 @@ const initializeMap = () => {
 
 initializeMap();
 
+/* ------------------------------------- Check if an hero is dead and remove the hero if dead --------------------------------------- */
+
+// Regarder si un héro est mort. Si oui, retourne l'élément HTML correspondant au héro mort.
+const isThereADeadHero = () => {
+  return document.querySelector(".to-delete")
+    ? document.querySelector(".to-delete")
+    : false;
+};
+
+// // If true (il y a un héros mort)
+const removeDeadHero = (deadHeroHTMLElement) => {
+  if (deadHeroHTMLElement === false) console.log("Nobody died!");
+  else {
+    deadHeroHTMLElement.id = "";
+    deadHeroHTMLElement.classList.remove("is-selected");
+    deadHeroHTMLElement.classList.remove("hero");
+    deadHeroHTMLElement.classList.remove("to-delete");
+    deadHeroHTMLElement.classList.add("dead-body");
+  }
+};
+
 /* ------------------------------------------------------ Turned-based system ------------------------------------------------------ */
+
+const playDungeonMasterTurn = () => {
+  // Trigger the function to have monsters attack players a first time
+  monsterAttack();
+  // Trigger the function to see if some heroes are dead
+  removeDeadHero(isThereADeadHero());
+  // Trigger the  function that moves monsters if within range
+  moveMonsters();
+  // Trigger the function to have monsters attack players a second time (for those who havent't already attacked)
+  monsterAttack();
+  // Trigger the function to see if some heroes are dead
+  removeDeadHero(isThereADeadHero());
+};
 
 const chooseNextPlayer = () => {
   let currentPlayer = document.querySelector(".current-player");
@@ -56,11 +91,13 @@ const chooseNextPlayer = () => {
       currentPlayer.classList.remove("current-player");
       const regdar = document.querySelector("#regdar");
       regdar.classList.add("current-player");
-      // Else set Lidda if alive
-    } else if (document.querySelector("#lidda")) {
+      // Set dungeonMaster as the next player after Regdar
+    } else if (document.querySelector("#dungeonMaster")) {
       currentPlayer.classList.remove("current-player");
-      const lidda = document.querySelector("#lidda");
-      lidda.classList.add("current-player");
+      const dungeonMaster = document.querySelector("#dungeonMaster");
+      dungeonMaster.classList.add("current-player");
+      // Jouer le tour du maître du donjon
+      playDungeonMasterTurn();
       // Else it means that the DUNGEON MASTER WON
     } else {
       throw alert("THE DUNGEON MASTER WON!");
@@ -78,16 +115,18 @@ const chooseNextPlayer = () => {
       currentPlayer.classList.remove("current-player");
       const regdar = document.querySelector("#regdar");
       regdar.classList.add("current-player");
+      // Set dungeonMaster as the next player after Regdar
+    } else if (document.querySelector("#dungeonMaster")) {
+      currentPlayer.classList.remove("current-player");
+      const dungeonMaster = document.querySelector("#dungeonMaster");
+      dungeonMaster.classList.add("current-player");
+      // Jouer le tour du maître du donjon
+      playDungeonMasterTurn();
       // Else set Lidda if alive
     } else if (document.querySelector("#lidda")) {
       currentPlayer.classList.remove("current-player");
       const lidda = document.querySelector("#lidda");
       lidda.classList.add("current-player");
-      // Else set Jozian if alive
-    } else if (document.querySelector("#jozian")) {
-      currentPlayer.classList.remove("current-player");
-      const jozian = document.querySelector("#jozian");
-      jozian.classList.add("current-player");
       // Else it means that the DUNGEON MASTER WON
     } else {
       throw alert("THE DUNGEON MASTER WON!");
@@ -100,6 +139,15 @@ const chooseNextPlayer = () => {
       currentPlayer.classList.remove("current-player");
       const regdar = document.querySelector("#regdar");
       regdar.classList.add("current-player");
+    } else if (document.querySelector("#dungeonMaster")) {
+      // Set dungeonMaster as the next player after Regdar
+      currentPlayer.classList.remove("current-player");
+      const dungeonMaster = document.querySelector("#dungeonMaster");
+      dungeonMaster.classList.add("current-player");
+      // Jouer le tour du maître du donjon
+      playDungeonMasterTurn();
+      // Jouer le tour du maître du donjon
+      playDungeonMasterTurn();
       // Else set Lidda if alive
     } else if (document.querySelector("#lidda")) {
       currentPlayer.classList.remove("current-player");
@@ -110,11 +158,6 @@ const chooseNextPlayer = () => {
       currentPlayer.classList.remove("current-player");
       const jozian = document.querySelector("#jozian");
       jozian.classList.add("current-player");
-      // Else set Mialye if alive
-    } else if (document.querySelector("#mialye")) {
-      currentPlayer.classList.remove("current-player");
-      const mialye = document.querySelector("#mialye");
-      mialye.classList.add("current-player");
       // Else it means that the DUNGEON MASTER WON
     } else {
       throw alert("THE DUNGEON MASTER WON!");
@@ -126,8 +169,8 @@ const chooseNextPlayer = () => {
     currentPlayer.classList.remove("current-player");
     const dungeonMaster = document.querySelector("#dungeonMaster");
     dungeonMaster.classList.add("current-player");
-    // Trigger the function to have monsters move and attack
-    monsterAttack();
+    // Jouer le tour du maître du donjon
+    playDungeonMasterTurn();
     // Reset the step counter of Regdar
     players.regdar.stepsCount = players.regdar.maxSteps;
   } else if (currentPlayer.id === "dungeonMaster") {
@@ -156,19 +199,20 @@ const chooseNextPlayer = () => {
       throw alert("THE DUNGEON MASTER WON!");
     }
   }
-  // // Remove the previous player from the current-player class
-  // currentPlayer.classList.remove("current-player");
 };
 
 /* ----------------------------------------- Intervals to update players stats every second ------------------------------------- */
 
-// setInterval(() => {
-//   console.log(`Vie de Lidda: ${players.lidda.health}`);
-//   console.log(`Vie de Jozian: ${players.jozian.health}`);
-//   console.log(`Vie de Mialyë: ${players.mialye.health}`);
-//   console.log(`Vie de Regdar: ${players.regdar.health}`);
-//   console.log(`Vie de Goblin: ${monsters.goblin.health}`);
-// }, 5000);
+setInterval(() => {
+  console.log(`Vie de Lidda: ${players.lidda.health}`);
+  console.log(`Statut Lidda: ${players.lidda.isAlive}`);
+  // console.log(`Vie de Jozian: ${players.jozian.health}`);
+  // console.log(`Statut Jozian: ${players.jozian.isAlive}`);
+  // console.log(`Vie de Mialyë: ${players.mialye.health}`);
+  // console.log(`Vie de Regdar: ${players.regdar.health}`);
+  console.log(`attackActionCount Goblin: ${monsters.goblin.attackActionCount}`);
+  console.log(`attackActionCount Gnoll: ${monsters.gnoll.attackActionCount}`);
+}, 2000);
 
 /* ------------------------------------------------------- Event listeners ------------------------------------------------------- */
 
