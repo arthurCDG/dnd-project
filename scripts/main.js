@@ -22,7 +22,13 @@ import {
   receiveDamage,
   healPlayer,
   monsterAttack,
+  addRandomObjectToInventory,
 } from "./interract.js";
+import {
+  soundTurnChange,
+  soundDoorOpened,
+  soundChestOpened,
+} from "./sounds.js";
 
 /* ------------------------------------- Initialize gameboard, players, monsters and objects --------------------------------------- */
 
@@ -70,7 +76,7 @@ const playDungeonMasterTurn = () => {
 
 const chooseNextPlayer = () => {
   let currentPlayer = document.querySelector(".current-player");
-
+  soundTurnChange.play();
   if (currentPlayer.id === "lidda") {
     // Set Jozian as the next player after Lidda if alive
     if (document.querySelector("#jozian")) {
@@ -200,6 +206,11 @@ const chooseNextPlayer = () => {
     let selected = document.querySelector(".is-selected");
     selected.classList.remove("is-selected");
   }
+  // Reset all attack counts
+  players.lidda.attackCount = players.lidda.maxAttackCount;
+  players.jozian.attackCount = players.jozian.maxAttackCount;
+  players.mialye.attackCount = players.mialye.maxAttackCount;
+  players.regdar.attackCount = players.regdar.maxAttackCount;
 };
 
 /* ----------------------------------------- Intervals to update players stats every second ------------------------------------- */
@@ -236,21 +247,20 @@ setInterval(() => {
   document.querySelector("#shield-of-regdar").innerHTML = players.regdar.shield;
   document.querySelector("#inventory-of-regdar").innerHTML =
     players.regdar.inventory;
-}, 50);
+}, 2050);
 
 /* ------------------------------------------------------- Event listeners ------------------------------------------------------- */
 
 window.addEventListener("load", () => {
   let textContainer = document.querySelector("#title span");
-  let text = "DUNGEONS-&-DRAGONS";
+  let text = "LET'S.PLAY.DnD.";
 
   let i = 0;
-  let speed = 50;
+  let speed = 150;
 
   function typeWriter() {
     if (i < text.length) {
-      if (text[i] === ".") textContainer.innerText += "";
-      else textContainer.innerText += ` ${text[i]}`;
+      textContainer.innerText += ` ${text[i]}`;
       i++;
       setTimeout(typeWriter, speed);
     }
@@ -269,26 +279,64 @@ document.querySelector("#btn-attack").addEventListener("click", () => {
   let selectedPosition = document.querySelector(".is-selected");
   let selectedPositionObject = monsters[selectedPosition.id];
 
-  if (totalDistanceWithSelected() === 1)
-    receiveDamage(selectedPositionObject, weaponAttack(currentPlayerObject));
-  if (selectedPositionObject.health <= 0) {
-    selectedPosition.id = "";
-    selectedPosition.classList.remove("is-selected");
-    selectedPosition.classList.remove("monster");
-    selectedPosition.classList.add("dead-body");
+  if (currentPlayerObject.attackCount < 1) {
+    throw alert("You already attacked during this turn!");
+  } else {
+    if (totalDistanceWithSelected() === 1)
+      receiveDamage(selectedPositionObject, weaponAttack(currentPlayerObject));
+    currentPlayerObject.attackCount--;
+    if (selectedPositionObject.health <= 0) {
+      selectedPosition.id = "";
+      selectedPosition.classList.remove("is-selected");
+      selectedPosition.classList.remove("monster");
+      selectedPosition.classList.add("dead-body");
+    }
   }
 });
 
 document.querySelector("#btn-search").addEventListener("click", () => {
-  // Mettre ici la fonction de search random sur les coffres
+  let currentPlayerPosition = document.querySelector(".current-player");
+  let currentPlayerObject = players[currentPlayerPosition.id];
+  let selectedPosition = document.querySelector(".is-selected");
+
+  if (
+    totalDistanceWithSelected() > 1 &&
+    selectedPosition.classList.contains("locked-chest")
+  ) {
+    throw alert("You are too far from the chest to open it!");
+  } else if (
+    totalDistanceWithSelected() === 1 &&
+    selectedPosition.classList.contains("locked-chest")
+  ) {
+    soundChestOpened.play();
+    selectedPosition.classList.remove("locked-chest");
+    selectedPosition.classList.add("opened-chest");
+    selectedPosition.classList.remove("is-selected");
+    addRandomObjectToInventory();
+  }
+});
+
+document.querySelector("#btn-heal").addEventListener("click", () => {
+  let currentPlayerPosition = document.querySelector(".current-player");
+  let currentPlayerObject = players[currentPlayerPosition.id];
+  let selectedPosition = document.querySelector(".is-selected");
+  let selectedPositionObject = monsters[selectedPosition.id];
+
+  if (selectedPosition.classList.contains("monster")) {
+    throw alert("You can't heal a monster!");
+  } else {
+    healPlayer(currentPlayerObject, selectedPositionObject);
+  }
 });
 
 document.querySelector(".key1").addEventListener("click", () => {
   document.querySelector(".door1").classList.remove("door1");
   document.querySelector(".key1").classList.remove("key1");
+  soundDoorOpened.play();
 });
 
 document.querySelector(".key2").addEventListener("click", () => {
   document.querySelector(".door2").classList.remove("door1");
   document.querySelector(".key2").classList.remove("key1");
+  soundDoorOpened.play();
 });

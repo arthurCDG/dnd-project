@@ -1,6 +1,7 @@
 import { players } from "./players.js";
 import { traps } from "./traps.js";
 import { monsters } from "./monsters.js";
+import { soundTrapActivated } from "./sounds.js";
 
 /* ------------------------------------ Get the players object (from the players.js file) ----------------------------------------------- */
 
@@ -131,14 +132,17 @@ export const playerMotion = (event) => {
       receiveTrapDamage(currentPlayerObject, traps.hole);
       newPosition.classList.remove("active-hole-trap");
       newPosition.classList.add("inactive-hole-trap");
+      soundTrapActivated.play();
     } else if (newPosition.classList.contains("active-fireball-trap")) {
       receiveTrapDamage(currentPlayerObject, traps.fireball);
       newPosition.classList.remove("active-fireball-trap");
       newPosition.classList.add("inactive-fireball-trap");
+      soundTrapActivated.play();
     } else if (newPosition.classList.contains("active-poison-trap")) {
       receiveTrapDamage(currentPlayerObject, traps.poisonedTrap());
       newPosition.classList.remove("active-poison-trap");
       newPosition.classList.add("inactive-poison-trap");
+      soundTrapActivated.play();
     }
   }
 };

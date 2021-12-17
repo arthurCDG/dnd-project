@@ -4,6 +4,8 @@ import { weapons } from "./weapons.js";
 import { spells } from "./spells.js";
 import { dice, throwDice } from "./dice.js";
 import { totalDistanceWithSelected } from "./motion.js";
+import { soundAttack, soundOfDeath, soundUnsuccesfulAttack } from "./sounds.js";
+import { artefacts } from "./artefacts.js";
 
 /* ---------------------------------------------- Attack and receive damage functions ---------------------------------------------- */
 
@@ -42,11 +44,26 @@ export const spellAttack = (caster) => {
 // Function that updates a player's or monster's health depending on the damage inflicted and the player's or monster's shield
 
 export const receiveDamage = (playerOrMonster, damage) => {
-  if (damage >= playerOrMonster.health + playerOrMonster.shield) {
+  if (playerOrMonster.inventory.includes("elven_mirror_shield")) {
+    monsters[document.querySelector(".current-player").id].health -= damage;
+    if (
+      damage >= monsters[document.querySelector(".current-player").id].health
+    ) {
+      monsters[document.querySelector(".current-player").id].isAlive = false;
+      document.querySelector(".current-player").id = "";
+      document.querySelector(".current-player").classList.remove("is-selected");
+      document.querySelector(".current-player").classList.remove("monster");
+      document.querySelector(".current-player").classList.add("dead-body");
+    }
+  } else if (damage >= playerOrMonster.health + playerOrMonster.shield) {
     playerOrMonster.health -= damage - playerOrMonster.shield;
     playerOrMonster.isAlive = false;
+    soundOfDeath.play();
   } else if (damage > playerOrMonster.shield) {
     playerOrMonster.health -= damage - playerOrMonster.shield;
+    soundAttack.play();
+  } else {
+    soundUnsuccesfulAttack.play();
   }
 };
 
@@ -55,18 +72,21 @@ export const receiveDamage = (playerOrMonster, damage) => {
 export const healPlayer = (caster, player) => {
   if (player.health <= 0)
     throw alert(
-      `${player.name} is dead. You can only save him with a resurrection spell`
+      `${player.name} is dead! You can only save him with a resurrection spell.`
     );
+  else if (player.health === player.maxHealth) {
+    throw alert(`${player.name} already has full life points!`);
+  } else {
+    let totalHealCounter = 0;
 
-  let totalHealCounter = 0;
+    const associatedDice = spells[caster.spell].actionDice;
+    associatedDice.forEach((dieElement) => {
+      totalHealCounter += throwDice(dice[dieElement]);
+    });
 
-  const associatedDice = spells[caster.spell].actionDice;
-  associatedDice.forEach((dieElement) => {
-    totalHealCounter += throwDice(dice[dieElement]);
-  });
-
-  player.health += totalHealCounter;
-  caster.mana -= spells[caster.spell].cost;
+    player.health += totalHealCounter;
+    caster.mana -= spells[caster.spell].cost;
+  }
 };
 
 /* ------------------------------------------------------- Monster attack ------------------------------------------------------- */
@@ -115,3 +135,8 @@ export const monsterAttack = () => {
 /* ---------------------------------------------------- Open chests (search) ----------------------------------------------------- */
 
 // Il faudra préparer la fonction qui retourne un objet random parmi les weapons et spells dans l'inventaire de la personne (et check si inventaire capacity is full)
+export const addRandomObjectToInventory = () => {
+  throw alert("it works");
+};
+// Si l'objet est obtenu est true_seeing_orb, alors exécution de artefacts[true_seeing_orb].action()
+// Si l'objet obtenu est moshuga_turtle_shieild, alors le player.shield += 1;

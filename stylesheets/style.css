@@ -8,6 +8,8 @@ Les joueurs seront représentés par des images de logo qui seront le background
 
 * {
   box-sizing: border-box;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
 }
 
 body {
@@ -40,7 +42,7 @@ body {
 
 #title {
   width: 80%;
-  padding: 30px 20px;
+  padding: 50px 20px 0;
   height: 120px;
   margin: auto;
   /* display: flex;
@@ -103,16 +105,17 @@ body {
 
 #control-panel {
   height: 120px;
+  width: 90%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-evenly;
 }
 
 .btn {
   background-image: url("../img/btn-background-dungeon-floor-2.jpg");
   background-position: center;
   border-radius: 15px;
-  width: 130px;
+  width: 150px;
   height: 35px;
   color: whitesmoke;
   font-weight: 500;
@@ -123,12 +126,6 @@ body {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-}
-
-.dice,
-.test {
-  width: 50px;
-  height: 50px;
 }
 
 /* -------------------------- Interractions --------------------------- */
@@ -228,6 +225,10 @@ body {
 
 .opened-chest {
   background-image: url("../img/map_elements/open-chest.svg");
+}
+
+.visible-trap {
+  background-image: url("../img/map_elements/traps/visible-trap.svg");
 }
 
 .inactive-hole-trap {
