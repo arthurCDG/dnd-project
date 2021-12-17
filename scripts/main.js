@@ -227,8 +227,9 @@ setInterval(() => {
       : players.lidda.inventory;
   document.querySelector("#inventory-of-lidda").innerHTML =
     spacedLiddaInventory;
-  document.querySelector("#weapon-of-lidda").innerHTML =
-    players.lidda.weapon.replace("_", " ");
+  document.querySelector("#weapon-of-lidda").innerHTML = players.lidda.weapon
+    .replace("_", " ")
+    .replace("_", " ");
 
   document.querySelector("#life-of-jozian").innerHTML = players.jozian.health;
   document.querySelector("#mana-of-jozian").innerHTML = players.jozian.mana;
@@ -241,8 +242,9 @@ setInterval(() => {
       : players.jozian.inventory;
   document.querySelector("#inventory-of-jozian").innerHTML =
     spacedJozianInventory;
-  document.querySelector("#weapon-of-jozian").innerHTML =
-    players.jozian.weapon.replace("_", " ");
+  document.querySelector("#weapon-of-jozian").innerHTML = players.jozian.weapon
+    .replace("_", " ")
+    .replace("_", " ");
 
   document.querySelector("#life-of-mialye").innerHTML = players.mialye.health;
   document.querySelector("#mana-of-mialye").innerHTML = players.mialye.mana;
@@ -255,8 +257,9 @@ setInterval(() => {
       : players.mialye.inventory;
   document.querySelector("#inventory-of-mialye").innerHTML =
     spacedMialyeInventory;
-  document.querySelector("#weapon-of-mialye").innerHTML =
-    players.mialye.weapon.replace("_", " ");
+  document.querySelector("#weapon-of-mialye").innerHTML = players.mialye.weapon
+    .replace("_", " ")
+    .replace("_", " ").to;
 
   document.querySelector("#life-of-regdar").innerHTML = players.regdar.health;
   document.querySelector("#mana-of-regdar").innerHTML = players.regdar.mana;
@@ -269,8 +272,9 @@ setInterval(() => {
       : players.regdar.inventory;
   document.querySelector("#inventory-of-regdar").innerHTML =
     spacedRegdarInventory;
-  document.querySelector("#weapon-of-regdar").innerHTML =
-    players.regdar.weapon.replace("_", " ");
+  document.querySelector("#weapon-of-regdar").innerHTML = players.regdar.weapon
+    .replace("_", " ")
+    .replace("_", " ");
 }, 1000);
 
 /* ------------------------------------------------------- Event listeners ------------------------------------------------------- */
