@@ -281,10 +281,10 @@ setInterval(() => {
 
 window.addEventListener("load", () => {
   document.querySelector("#game-map").style.backgroundImage =
-    "url(img/dnd-logo.png)";
+    "url(dnd-project/img/dnd-logo.png)";
   setTimeout(() => {
     document.querySelector("#game-map").style.backgroundImage =
-      "url(img/background/dungeon-gameboard-optim.jpg)";
+      "url(dnd-project/img/background/dungeon-gameboard-optim.jpg)";
     initializeMap();
 
     typeWriter();
