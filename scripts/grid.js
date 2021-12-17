@@ -44,7 +44,7 @@ export const placeMonstersOnMap = () => {
   ogreSquare.id = "ogre";
   ogreSquare.classList.add("monster");
   const lichKingSquare = document.querySelector("[data-x='3'][data-y='26']");
-  lichKingSquare.id = "lichKing";
+  lichKingSquare.id = "lichking";
   lichKingSquare.classList.add("monster");
   const trollSquare = document.querySelector("[data-x='12'][data-y='10']");
   trollSquare.id = "troll";

@@ -23,6 +23,10 @@ export const weaponAttack = (attacker) => {
     document.querySelector("#state").innerHTML = "";
   }, 2000);
 
+  // Retirer is-selected si existe
+  if (document.querySelector(".current-player"))
+    document.querySelector(".current-player").classList.remove("is-selected");
+
   return totalDamageCounter;
 };
 
@@ -45,7 +49,8 @@ export const spellAttack = (caster) => {
 
 export const receiveDamage = (playerOrMonster, damage) => {
   if (playerOrMonster.inventory.includes("elven_mirror_shield")) {
-    monsters[document.querySelector(".current-player").id].health -= damage;
+    monsters[document.querySelector(".current-player").id].health -=
+      damage - monsters[document.querySelector(".current-player").id].shield;
     if (
       damage >= monsters[document.querySelector(".current-player").id].health
     ) {

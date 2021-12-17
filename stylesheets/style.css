@@ -6,10 +6,14 @@ Les joueurs seront représentés par des images de logo qui seront le background
 
 */
 
+/* @import url("https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Vujahday+Script&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Moon+Dance&family=Vujahday+Script&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Arima+Madurai:wght@100;200;300;400;500;700;800;900&display=swap");
+
 * {
   box-sizing: border-box;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
+  font-family: "Arima Madurai", cursive;
+  line-height: 1.2rem;
 }
 
 body {
@@ -24,6 +28,10 @@ body {
   display: grid;
   grid-template-rows: repeat(17, 1fr);
   grid-template-columns: repeat(27, 1fr);
+}
+
+#logo {
+  width: 350px;
 }
 
 .game-square {
@@ -50,12 +58,14 @@ body {
   align-content: center; */
 }
 
-#title span {
+#title p {
   font-size: 30px;
+  padding: 10px 0;
+  line-height: 2rem;
 }
 
 #stat-panel {
-  height: 350px;
+  height: 420px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -89,6 +99,18 @@ body {
   color: whitesmoke;
 }
 
+.hero-sheet > span {
+  padding-left: 5px;
+}
+
+.hero-sheet div {
+  padding-top: 5px;
+}
+
+.hero-sheet span {
+  line-break: normal;
+}
+
 #div-jozian {
   background-color: blue;
   width: 90%;
@@ -111,7 +133,7 @@ body {
 }
 
 #control-panel {
-  height: 120px;
+  height: 50px;
   width: 90%;
   display: flex;
   flex-wrap: wrap;
@@ -122,7 +144,7 @@ body {
   background-image: url("../img/btn-background-dungeon-floor-2.jpg");
   background-position: center;
   border-radius: 15px;
-  width: 150px;
+  width: 100px;
   height: 35px;
   color: whitesmoke;
   font-weight: 500;
@@ -200,7 +222,7 @@ body {
   background-image: url("../img/players_and_monsters/specter.svg");
 }
 
-#lichKing {
+#lichking {
   background-image: url("../img/players_and_monsters/lichKing.svg");
 }
 

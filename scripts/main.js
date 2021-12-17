@@ -40,7 +40,7 @@ const initializeMap = () => {
   placeOtherMapElements();
 };
 
-initializeMap();
+// initializeMap();
 
 /* ------------------------------------- Check if an hero is dead and remove the hero if dead --------------------------------------- */
 
@@ -221,62 +221,96 @@ setInterval(() => {
   document.querySelector("#steps-of-lidda").innerHTML =
     players.lidda.stepsCount;
   document.querySelector("#shield-of-lidda").innerHTML = players.lidda.shield;
+  const spacedLiddaInventory =
+    players.lidda.inventory.length > 0
+      ? players.lidda.inventory.map((item) => item.replace("_", " "))
+      : players.lidda.inventory;
   document.querySelector("#inventory-of-lidda").innerHTML =
-    players.lidda.inventory;
-  document.querySelector("#weapon-of-lidda").innerHTML = players.lidda.weapon;
+    spacedLiddaInventory;
+  document.querySelector("#weapon-of-lidda").innerHTML =
+    players.lidda.weapon.replace("_", " ");
 
   document.querySelector("#life-of-jozian").innerHTML = players.jozian.health;
   document.querySelector("#mana-of-jozian").innerHTML = players.jozian.mana;
   document.querySelector("#steps-of-jozian").innerHTML =
     players.jozian.stepsCount;
   document.querySelector("#shield-of-jozian").innerHTML = players.jozian.shield;
+  const spacedJozianInventory =
+    players.jozian.inventory.length > 0
+      ? players.jozian.inventory.map((item) => item.replace("_", " "))
+      : players.jozian.inventory;
   document.querySelector("#inventory-of-jozian").innerHTML =
-    players.jozian.inventory;
-  document.querySelector("#weapon-of-jozian").innerHTML = players.jozian.weapon;
+    spacedJozianInventory;
+  document.querySelector("#weapon-of-jozian").innerHTML =
+    players.jozian.weapon.replace("_", " ");
 
   document.querySelector("#life-of-mialye").innerHTML = players.mialye.health;
   document.querySelector("#mana-of-mialye").innerHTML = players.mialye.mana;
   document.querySelector("#steps-of-mialye").innerHTML =
     players.mialye.stepsCount;
   document.querySelector("#shield-of-mialye").innerHTML = players.mialye.shield;
+  const spacedMialyeInventory =
+    players.mialye.inventory.length > 0
+      ? players.mialye.inventory.map((item) => item.replace("_", " "))
+      : players.mialye.inventory;
   document.querySelector("#inventory-of-mialye").innerHTML =
-    players.mialye.inventory;
-  document.querySelector("#weapon-of-mialye").innerHTML = players.mialye.weapon;
+    spacedMialyeInventory;
+  document.querySelector("#weapon-of-mialye").innerHTML =
+    players.mialye.weapon.replace("_", " ");
 
   document.querySelector("#life-of-regdar").innerHTML = players.regdar.health;
   document.querySelector("#mana-of-regdar").innerHTML = players.regdar.mana;
   document.querySelector("#steps-of-regdar").innerHTML =
     players.regdar.stepsCount;
   document.querySelector("#shield-of-regdar").innerHTML = players.regdar.shield;
+  const spacedRegdarInventory =
+    players.regdar.inventory.length > 0
+      ? players.regdar.inventory.map((item) => item.replace("_", " "))
+      : players.regdar.inventory;
   document.querySelector("#inventory-of-regdar").innerHTML =
-    players.regdar.inventory;
-  document.querySelector("#weapon-of-regdar").innerHTML = players.regdar.weapon;
-}, 2050);
+    spacedRegdarInventory;
+  document.querySelector("#weapon-of-regdar").innerHTML =
+    players.regdar.weapon.replace("_", " ");
+}, 1000);
 
 /* ------------------------------------------------------- Event listeners ------------------------------------------------------- */
 
 window.addEventListener("load", () => {
-  let textContainer = document.querySelector("#title span");
-  let text = "LET'S.PLAY.DnD.";
+  document.querySelector("#game-map").style.backgroundImage =
+    "url(../img/dnd-logo.png)";
+  setTimeout(() => {
+    document.querySelector("#game-map").style.backgroundImage =
+      "url(../img/background/dungeon-gameboard-optim.jpg)";
+    initializeMap();
 
+    typeWriter();
+  }, 4000);
+
+  document.querySelector("#stat-panel").style.display = "none";
+  document.querySelector("#control-panel").style.display = "none";
+  document.querySelector("#title").height = "400px";
+
+  let textContainer = document.querySelector("#title p");
+  let text =
+    "Nos quatre héros viennent de pénétrer dans le donjon. Leur objectif : obtenir la couronne du roi liche. Mais attention, ils devront faire face à des monstres sanguinaires et des pièges vicieux sur leur passage.";
   let i = 0;
-  let speed = 150;
+  let speed = 50;
 
   function typeWriter() {
     if (i < text.length) {
-      textContainer.innerText += ` ${text[i]}`;
+      textContainer.textContent += `${text.charAt(i)}`;
       i++;
       setTimeout(typeWriter, speed);
     }
   }
 
-  typeWriter();
-
   setTimeout(() => {
+    document.querySelector("#stat-panel").style.display = "flex";
+    document.querySelector("#control-panel").style.display = "flex";
     document.querySelector("#title").remove();
     document.querySelector("#stat-panel").style.height = "470px";
     document.querySelector("#stat-panel").style.margin = "35px 0 0 0";
-  }, 3000);
+  }, 18000);
 });
 
 document
@@ -347,14 +381,17 @@ document.querySelector("#btn-heal").addEventListener("click", () => {
   }
 });
 
-document.querySelector(".key1").addEventListener("click", () => {
-  document.querySelector(".door1").classList.remove("door1");
-  document.querySelector(".key1").classList.remove("key1");
-  soundDoorOpened.play();
-});
+const intervalId = setTimeout(() => {
+  document.querySelector(".key1").addEventListener("click", () => {
+    document.querySelector(".door1").classList.remove("door1");
+    document.querySelector(".key1").classList.remove("key1");
+    soundDoorOpened.play();
+  });
 
-document.querySelector(".key2").addEventListener("click", () => {
-  document.querySelector(".door2").classList.remove("door2");
-  document.querySelector(".key2").classList.remove("key2");
-  soundDoorOpened.play();
-});
+  document.querySelector(".key2").addEventListener("click", () => {
+    document.querySelector(".door2").classList.remove("door2");
+    document.querySelector(".key2").classList.remove("key2");
+    soundDoorOpened.play();
+  });
+  clearTimeout(intervalId);
+}, 5000);

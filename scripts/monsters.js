@@ -31,15 +31,15 @@ export const monsters = {
     mana: null,
     skills: null,
     shield: 2,
-    maxSteps: 1,
-    stepsCount: 1,
+    maxSteps: 2,
+    stepsCount: 2,
     weapon: "heavy_club",
     isAlive: true,
     inventory: [],
   },
 
-  lichKing: {
-    name: "Lich King",
+  lichking: {
+    name: "LichKing",
     health: 10,
     mana: 10,
     skills: null,

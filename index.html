@@ -12,21 +12,22 @@
         <div id="game-map"></div>
         <div id="interaction-panel">
             <div id="title">
-                <span></span>
+                <img id="logo" src="./img/dnd-logo-true.png">
+                <p></p>
             </div>
             <div id="stat-panel">
                 <div class="stat-sheet">
-                    <div id="div-lidda">Lidda
+                    <div id="div-lidda" class="hero-sheet"><span>Lidda</span>
                         <div class="stats-info">Life: <span id="life-of-lidda"></span></div>
                         <div class="stats-info">Mana: <span id="mana-of-lidda"></span></div>
                         <div class="stats-info">Steps: <span id="steps-of-lidda"></span></div>
                         <div class="stats-info">Shield: <span id="shield-of-lidda"></span></div>
-                        <div class="stats-info">Inventory: <p id="inventory-of-lidda"></p></div>
+                        <div class="stats-info">Inventory: <span id="inventory-of-lidda"></span></div>
                         <div class="stats-info">Equipped weapon: <span id="weapon-of-lidda"></span></div>
                     </div>
                 </div>
                 <div class="stat-sheet">
-                    <div id="div-jozian">Jozian
+                    <div id="div-jozian" class="hero-sheet"><span>Jozian</span>
                         <div class="stats-info">Life: <span id="life-of-jozian"></span></div>
                         <div class="stats-info">Mana: <span id="mana-of-jozian"></span></div>
                         <div class="stats-info">Steps: <span id="steps-of-jozian"></span></div>
@@ -37,7 +38,7 @@
                     </div>
                 </div>
                 <div class="stat-sheet">
-                    <div id="div-mialye">Mialyë
+                    <div id="div-mialye" class="hero-sheet"><span>Mialyë</span>
                         <div class="stats-info">Life: <span id="life-of-mialye"></span></div>
                         <div class="stats-info">Mana: <span id="mana-of-mialye"></span></div>
                         <div class="stats-info">Steps: <span id="steps-of-mialye"></span></div>
@@ -47,7 +48,7 @@
                     </div>
                 </div>
                 <div class="stat-sheet">
-                    <div id="div-regdar">Regdar
+                    <div id="div-regdar" class="hero-sheet"><span>Regdar</span>
                         <div class="stats-info">Life: <span id="life-of-regdar"></span></div>
                         <div class="stats-info">Mana: <span id="mana-of-regdar"></span></div>
                         <div class="stats-info">Steps: <span id="steps-of-regdar"></span></div>
@@ -58,8 +59,8 @@
                 </div>
             </div>
             <div id="control-panel">
-                <button id="btn-end-of-turn" class="btn">End of turn</button>
-                <button id="btn-attack" class="btn">Weapon attack</button>
+                <button id="btn-end-of-turn" class="btn">End turn</button>
+                <button id="btn-attack" class="btn">Attack</button>
                 <button id="btn-heal" class="btn">Heal</button>
                 <button id="btn-search" class="btn">Search</button>
             </div>
