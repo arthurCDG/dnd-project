@@ -238,13 +238,10 @@ setInterval(() => {
     players.regdar.inventory;
 }, 50);
 
-// Choses à update: vie, mana, pas, shield (ou alors le mettre en image fixe avec un logo bouclier ?) et inventaire !
-// Ainsi que arme et spell actif ?????
-
 /* ------------------------------------------------------- Event listeners ------------------------------------------------------- */
 
 window.addEventListener("load", () => {
-  let textContainer = document.querySelector("#state span");
+  let textContainer = document.querySelector("#title span");
   let text = "DUNGEONS-&-DRAGONS";
 
   let i = 0;
@@ -295,17 +292,3 @@ document.querySelector(".key2").addEventListener("click", () => {
   document.querySelector(".door2").classList.remove("door1");
   document.querySelector(".key2").classList.remove("key1");
 });
-
-/* ---------------------------------------------------------- Render dice ---------------------------------------------------------- */
-
-// Sélectionner l'image element 1 et l'image element 2
-// let dice1 = document.createElement('img');
-// let dice2 = document.createElement('img');
-///--------> Il faut ajouter des fichiers image source à chaque face du dé
-// dice1.src = ????
-// dice2.src = ????
-let testtt = document.querySelector(".test");
-// En fonction du résultat de throwDice, choisir l'image à affichher dans l'image 1 et 2
-// dice1.src = "../img/dice-images/0_2.png";
-// dice2.src = "../img/dice-images/2_2.png";
-testtt.src = "../img/dice-roll-hand.gif";

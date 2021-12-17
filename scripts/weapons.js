@@ -5,7 +5,7 @@ export const weapons = {
   },
   balanced_throwing_dagger: {
     name: "Balanced throwing dagger",
-    actionDice: ["yellowDie", "yellowDie"],
+    actionDice: ["yellowDie", "orangeDie"],
   },
   crossbow_of_faith: {
     name: "Crossbow of faith",
@@ -13,11 +13,23 @@ export const weapons = {
   },
   dagger: {
     name: "Dagger",
-    actionDice: ["yellowDie", "yellowDie"],
+    actionDice: ["yellowDie", "orangeDie"],
+  },
+  death_bringer: {
+    name: "Death Bringer",
+    actionDice: ["redDie", "purpleDie"],
+  },
+  dragons_fury: {
+    name: "Dragon's Fury",
+    actionDice: ["redDie", "purpleDie"],
   },
   fantomatic_sword: {
     name: "Fantomatic sword",
-    actionDice: ["redDie", "purpleDie"],
+    actionDice: ["redDie", "orangeDie"],
+  },
+  hammer_of_submission: {
+    name: "Hammer of Submission",
+    actionDice: ["orangeDie", "purpleDie"],
   },
   heavy_club: {
     name: "Heavy club",
@@ -33,7 +45,7 @@ export const weapons = {
   },
   magic_projectile: {
     name: "Magic projectile",
-    actionDice: ["yellowDie", "yellowDie"],
+    actionDice: ["yellowDie", "orangeDie"],
   },
   short_axe: {
     name: "Short axe",

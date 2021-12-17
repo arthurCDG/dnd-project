@@ -16,6 +16,11 @@ export const weaponAttack = (attacker) => {
     totalDamageCounter += throwDice(dice[dieElement]);
   });
 
+  // Retirer les images des dés après 2 secondes
+  setTimeout(() => {
+    document.querySelector("#state").innerHTML = "";
+  }, 2000);
+
   return totalDamageCounter;
 };
 
@@ -66,20 +71,8 @@ export const healPlayer = (caster, player) => {
 
 /* ------------------------------------------------------- Monster attack ------------------------------------------------------- */
 
-// Function to make sure monsters always start their turn with 1 attack token and nothing more
-const resetAllMonstersAttackCount = () => {
-  monsters.goblin.attackActionCount === 1;
-  monsters.gnoll.attackActionCount === 1;
-  monsters.ogre.attackActionCount === 1;
-  monsters.troll.attackActionCount === 1;
-  monsters.skeleton.attackActionCount === 1;
-  monsters.specter.attackActionCount === 1;
-  monsters.lichKing.attackActionCount === 1;
-};
-
 // Faire un querySelectorAll de tous les ID de monstre pour obtenir tous ceux encore vivants
 export const monsterAttack = () => {
-  resetAllMonstersAttackCount();
   let allLivingMonsters = document.querySelectorAll(".monster");
   let allLivingHeroes = document.querySelectorAll(".hero");
   //   Si je veux utiliser totalDistanceWithSelected, je dois faire une boucle où chaque monstre va être current-player

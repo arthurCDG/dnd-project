@@ -58,6 +58,12 @@ export const placeMonstersOnMap = () => {
   const slimeSquare = document.querySelector("[data-x='4'][data-y='13']");
   slimeSquare.id = "slime";
   slimeSquare.classList.add("monster");
+  const minotaurSquare = document.querySelector("[data-x='7'][data-y='12']");
+  minotaurSquare.id = "minotaur";
+  minotaurSquare.classList.add("monster");
+  const wyvernSquare = document.querySelector("[data-x='15'][data-y='13']");
+  wyvernSquare.id = "wyvern";
+  wyvernSquare.classList.add("monster");
 };
 
 export const placeWallsOnMap = () => {

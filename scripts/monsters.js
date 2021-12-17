@@ -7,7 +7,7 @@ export const monsters = {
     shield: 1,
     maxSteps: 5,
     stepsCount: 5,
-    weapon: "dagger",
+    weapon: "short_axe",
     isAlive: true,
   },
 
@@ -19,7 +19,19 @@ export const monsters = {
     shield: 1,
     maxSteps: 6,
     stepsCount: 6,
-    weapon: "short_axe",
+    weapon: "dagger",
+    isAlive: true,
+  },
+
+  minotaur: {
+    name: "Minautor",
+    health: 8,
+    mana: null,
+    skills: null,
+    shield: 2,
+    maxSteps: 1,
+    stepsCount: 1,
+    weapon: "heavy_club",
     isAlive: true,
   },
 
@@ -85,12 +97,24 @@ export const monsters = {
 
   troll: {
     name: "Troll",
-    health: 8,
+    health: 9,
     mana: null,
     skills: null,
-    shield: 3,
+    shield: 2,
     maxSteps: 3,
     stepsCount: 3,
+    weapon: "heavy_club",
+    isAlive: true,
+  },
+
+  wyvern: {
+    name: "Wyvern",
+    health: 7,
+    mana: 6,
+    skills: null,
+    shield: 2,
+    maxSteps: 7,
+    stepsCount: 7,
     weapon: "heavy_club",
     isAlive: true,
   },
