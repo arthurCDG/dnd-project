@@ -257,3 +257,7 @@ body {
 .key2 {
   background-image: url("../img/map_elements/key.svg");
 }
+
+.brasero {
+  background-image: url("../img/map-decoration/brasero.svg");
+}

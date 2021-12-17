@@ -176,6 +176,13 @@ export const placeOtherMapElements = () => {
     const pillarSquare = document.querySelector(`[data-x='${i}'][data-y='10']`);
     pillarSquare.classList.add("pillar");
   }
+  // Place decoration
+  const brasero1 = document.querySelector("[data-x='9'][data-y='22']");
+  brasero1.classList.add("brasero");
+  const brasero2 = document.querySelector("[data-x='16'][data-y='8']");
+  brasero2.classList.add("brasero");
+  const brasero3 = document.querySelector("[data-x='9'][data-y='24']");
+  brasero3.classList.add("brasero");
   // Place hidden traps
   const trapSquare1 = document.querySelector("[data-x='4'][data-y='4']");
   trapSquare1.classList.add("active-hole-trap");
