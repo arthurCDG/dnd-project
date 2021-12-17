@@ -70,6 +70,13 @@ body {
   width: 40%;
 }
 
+.stat-sheet p {
+  font-size: 10px;
+  padding-top: 0;
+  margin-top: 4px;
+  word-break: break-all;
+}
+
 .stats-info {
   color: black;
   padding: 2px 0;

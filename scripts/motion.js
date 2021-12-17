@@ -195,9 +195,6 @@ export const moveMonsters = () => {
           `[data-x='${yMinusOneAttr}'][data-y='${xAttrOfHero}']`
         );
 
-        console.log(xPlusOneSquareOfHero);
-        console.log(typeof xPlusOneSquareOfHero.id);
-
         if (
           xPlusOneSquareOfHero.id !== undefined &&
           !xPlusOneSquareOfHero.classList.contains("hero") &&

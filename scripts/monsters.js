@@ -9,6 +9,7 @@ export const monsters = {
     stepsCount: 5,
     weapon: "short_axe",
     isAlive: true,
+    inventory: [],
   },
 
   goblin: {
@@ -21,6 +22,7 @@ export const monsters = {
     stepsCount: 6,
     weapon: "dagger",
     isAlive: true,
+    inventory: [],
   },
 
   minotaur: {
@@ -33,6 +35,7 @@ export const monsters = {
     stepsCount: 1,
     weapon: "heavy_club",
     isAlive: true,
+    inventory: [],
   },
 
   lichKing: {
@@ -45,6 +48,7 @@ export const monsters = {
     stepsCount: 5,
     weapon: "lich_ward",
     isAlive: true,
+    inventory: [],
   },
 
   ogre: {
@@ -57,6 +61,7 @@ export const monsters = {
     stepsCount: 4,
     weapon: "heavy_club",
     isAlive: true,
+    inventory: [],
   },
 
   skeleton: {
@@ -69,6 +74,7 @@ export const monsters = {
     stepsCount: 5,
     weapon: "fantomatic_sword",
     isAlive: true,
+    inventory: [],
   },
 
   slime: {
@@ -81,6 +87,7 @@ export const monsters = {
     stepsCount: 2,
     weapon: "fantomatic_sword",
     isAlive: true,
+    inventory: [],
   },
 
   specter: {
@@ -93,6 +100,7 @@ export const monsters = {
     stepsCount: 5,
     weapon: "fantomatic_sword",
     isAlive: true,
+    inventory: [],
   },
 
   troll: {
@@ -105,6 +113,7 @@ export const monsters = {
     stepsCount: 3,
     weapon: "heavy_club",
     isAlive: true,
+    inventory: [],
   },
 
   wyvern: {
@@ -117,5 +126,6 @@ export const monsters = {
     stepsCount: 7,
     weapon: "heavy_club",
     isAlive: true,
+    inventory: [],
   },
 };

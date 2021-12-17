@@ -135,8 +135,24 @@ export const monsterAttack = () => {
 /* ---------------------------------------------------- Open chests (search) ----------------------------------------------------- */
 
 // Il faudra préparer la fonction qui retourne un objet random parmi les weapons et spells dans l'inventaire de la personne (et check si inventaire capacity is full)
-export const addRandomObjectToInventory = () => {
-  throw alert("it works");
+export const addRandomObjectToInventory = (player) => {
+  let allObjects = [weapons, artefacts, spells];
+  let randomIndex1 = Math.floor(Math.random() * 3);
+  let typeOfNewObject = Object.keys(allObjects[randomIndex1]);
+  let randomIndex2 = Math.floor(Math.random() * typeOfNewObject.length);
+  let newObject = typeOfNewObject[randomIndex2];
+
+  if (allObjects[randomIndex1] === weapons) {
+    player.inventory.push(player.weapon);
+    player.weapon = newObject;
+  } else if (allObjects[randomIndex1] === spells) {
+    player.inventory.push(player.spell);
+    player.spell = newObject;
+  } else {
+    player.inventory.push(newObject);
+    if (newObject === "true_seeing_orb") artefacts["true_seeing_orb"].action();
+    if (newObject === "moshuga_turtle_shield") player.shield += 1;
+  }
 };
 // Si l'objet est obtenu est true_seeing_orb, alors exécution de artefacts[true_seeing_orb].action()
 // Si l'objet obtenu est moshuga_turtle_shieild, alors le player.shield += 1;

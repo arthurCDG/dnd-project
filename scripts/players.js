@@ -46,7 +46,7 @@ export const players = {
     shield: 2,
     weapon: "balanced_throwing_dagger",
     spell: "first_aid",
-    inventory: ["yondalla_necklace", "elven_mirror_shield"],
+    inventory: ["yondalla_necklace"],
     inventoryCapacity: 4,
     isAlive: true,
   },

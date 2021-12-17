@@ -223,6 +223,7 @@ setInterval(() => {
   document.querySelector("#shield-of-lidda").innerHTML = players.lidda.shield;
   document.querySelector("#inventory-of-lidda").innerHTML =
     players.lidda.inventory;
+  document.querySelector("#weapon-of-lidda").innerHTML = players.lidda.weapon;
 
   document.querySelector("#life-of-jozian").innerHTML = players.jozian.health;
   document.querySelector("#mana-of-jozian").innerHTML = players.jozian.mana;
@@ -231,6 +232,7 @@ setInterval(() => {
   document.querySelector("#shield-of-jozian").innerHTML = players.jozian.shield;
   document.querySelector("#inventory-of-jozian").innerHTML =
     players.jozian.inventory;
+  document.querySelector("#weapon-of-jozian").innerHTML = players.jozian.weapon;
 
   document.querySelector("#life-of-mialye").innerHTML = players.mialye.health;
   document.querySelector("#mana-of-mialye").innerHTML = players.mialye.mana;
@@ -239,6 +241,7 @@ setInterval(() => {
   document.querySelector("#shield-of-mialye").innerHTML = players.mialye.shield;
   document.querySelector("#inventory-of-mialye").innerHTML =
     players.mialye.inventory;
+  document.querySelector("#weapon-of-mialye").innerHTML = players.mialye.weapon;
 
   document.querySelector("#life-of-regdar").innerHTML = players.regdar.health;
   document.querySelector("#mana-of-regdar").innerHTML = players.regdar.mana;
@@ -247,6 +250,7 @@ setInterval(() => {
   document.querySelector("#shield-of-regdar").innerHTML = players.regdar.shield;
   document.querySelector("#inventory-of-regdar").innerHTML =
     players.regdar.inventory;
+  document.querySelector("#weapon-of-regdar").innerHTML = players.regdar.weapon;
 }, 2050);
 
 /* ------------------------------------------------------- Event listeners ------------------------------------------------------- */
@@ -267,6 +271,12 @@ window.addEventListener("load", () => {
   }
 
   typeWriter();
+
+  setTimeout(() => {
+    document.querySelector("#title").remove();
+    document.querySelector("#stat-panel").style.height = "470px";
+    document.querySelector("#stat-panel").style.margin = "35px 0 0 0";
+  }, 3000);
 });
 
 document
@@ -308,11 +318,19 @@ document.querySelector("#btn-search").addEventListener("click", () => {
     totalDistanceWithSelected() === 1 &&
     selectedPosition.classList.contains("locked-chest")
   ) {
-    soundChestOpened.play();
-    selectedPosition.classList.remove("locked-chest");
-    selectedPosition.classList.add("opened-chest");
-    selectedPosition.classList.remove("is-selected");
-    addRandomObjectToInventory();
+    if (
+      currentPlayerObject.inventory.length ===
+      currentPlayerObject.inventoryCapacity
+    ) {
+      selectedPosition.classList.remove("is-selected");
+      throw alert("You are already at full capacity!");
+    } else {
+      soundChestOpened.play();
+      selectedPosition.classList.remove("locked-chest");
+      selectedPosition.classList.add("opened-chest");
+      selectedPosition.classList.remove("is-selected");
+      addRandomObjectToInventory(currentPlayerObject);
+    }
   }
 });
 
@@ -336,7 +354,7 @@ document.querySelector(".key1").addEventListener("click", () => {
 });
 
 document.querySelector(".key2").addEventListener("click", () => {
-  document.querySelector(".door2").classList.remove("door1");
-  document.querySelector(".key2").classList.remove("key1");
+  document.querySelector(".door2").classList.remove("door2");
+  document.querySelector(".key2").classList.remove("key2");
   soundDoorOpened.play();
 });
