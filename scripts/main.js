@@ -280,6 +280,7 @@ setInterval(() => {
 /* ------------------------------------------------------- Event listeners ------------------------------------------------------- */
 
 window.addEventListener("load", () => {
+  console.log("loaded");
   document.querySelector("#game-map").style.backgroundImage =
     "url(img/dnd-logo.png)";
   setTimeout(() => {
