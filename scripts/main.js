@@ -40,26 +40,6 @@ const initializeMap = () => {
   placeOtherMapElements();
 };
 
-/* ------------------------------------- Check if an hero is dead and remove the hero if dead --------------------------------------- */
-
-// Regarder si un héro est mort. Si oui, retourne l'élément HTML correspondant au héro mort.
-const isThereADeadHero = () => {
-  return document.querySelector(".to-delete")
-    ? document.querySelector(".to-delete")
-    : false;
-};
-
-// // If true (il y a un héros mort)
-const removeDeadHero = (deadHeroHTMLElement) => {
-  if (deadHeroHTMLElement !== false) {
-    deadHeroHTMLElement.id = "";
-    deadHeroHTMLElement.classList.remove("is-selected");
-    deadHeroHTMLElement.classList.remove("hero");
-    deadHeroHTMLElement.classList.remove("to-delete");
-    deadHeroHTMLElement.classList.add("dead-body");
-  }
-};
-
 /* ----------------------------------------------------- Display modals/popups ----------------------------------------------------- */
 
 export const displayModal = (text) => {
@@ -97,6 +77,32 @@ export const displayEndGameModal = (text) => {
     window.reload();
   });
 };
+
+/* ------------------------------------- Check if an hero is dead or if they won over DM --------------------------------------- */
+
+// Regarder si un héro est mort. Si oui, retourne l'élément HTML correspondant au héro mort.
+const isThereADeadHero = () => {
+  return document.querySelector(".to-delete")
+    ? document.querySelector(".to-delete")
+    : false;
+};
+
+// // If true (il y a un héros mort)
+const removeDeadHero = (deadHeroHTMLElement) => {
+  if (deadHeroHTMLElement !== false) {
+    deadHeroHTMLElement.id = "";
+    deadHeroHTMLElement.classList.remove("is-selected");
+    deadHeroHTMLElement.classList.remove("hero");
+    deadHeroHTMLElement.classList.remove("to-delete");
+    deadHeroHTMLElement.classList.add("dead-body");
+  }
+};
+
+// Check if the players won over the dungeon master
+setInterval(() => {
+  if (!document.querySelector("#lichking"))
+    displayEndGameModal("VICTORY! You defeated the Lich King!");
+}, 1000);
 
 /* ------------------------------------------------------ Turned-based system ------------------------------------------------------ */
 
@@ -181,8 +187,6 @@ const chooseNextPlayer = () => {
       currentPlayer.classList.remove("current-player");
       const dungeonMaster = document.querySelector("#dungeonMaster");
       dungeonMaster.classList.add("current-player");
-      // Jouer le tour du maître du donjon
-      playDungeonMasterTurn();
       // Jouer le tour du maître du donjon
       playDungeonMasterTurn();
       // Else set Lidda if alive
