@@ -40,8 +40,6 @@ const initializeMap = () => {
   placeOtherMapElements();
 };
 
-// initializeMap();
-
 /* ------------------------------------- Check if an hero is dead and remove the hero if dead --------------------------------------- */
 
 // Regarder si un héro est mort. Si oui, retourne l'élément HTML correspondant au héro mort.
@@ -53,14 +51,51 @@ const isThereADeadHero = () => {
 
 // // If true (il y a un héros mort)
 const removeDeadHero = (deadHeroHTMLElement) => {
-  if (deadHeroHTMLElement === false) console.log("Nobody died!");
-  else {
+  if (deadHeroHTMLElement !== false) {
     deadHeroHTMLElement.id = "";
     deadHeroHTMLElement.classList.remove("is-selected");
     deadHeroHTMLElement.classList.remove("hero");
     deadHeroHTMLElement.classList.remove("to-delete");
     deadHeroHTMLElement.classList.add("dead-body");
   }
+};
+
+/* ----------------------------------------------------- Display modals/popups ----------------------------------------------------- */
+
+export const displayModal = (text) => {
+  const modal = document.createElement("dialog");
+  modal.classList.add("modal");
+  modal.innerText = text;
+  const form = document.createElement("form");
+  form.method = "dialog";
+  modal.appendChild(form);
+  const closeBtn = document.createElement("button");
+  closeBtn.classList.add("btn");
+  closeBtn.innerText = "close";
+  form.appendChild(closeBtn);
+  document.querySelector("body").appendChild(modal);
+  modal.showModal();
+  closeBtn.addEventListener("click", () => {
+    modal.closeModal("closed modal");
+  });
+};
+
+export const displayEndGameModal = (text) => {
+  const modal = document.createElement("dialog");
+  modal.classList.add("modal");
+  modal.innerText = text;
+  const form = document.createElement("form");
+  form.method = "dialog";
+  modal.appendChild(form);
+  const startAgainBtn = document.createElement("button");
+  startAgainBtn.classList.add("btn");
+  startAgainBtn.innerText = "Reload";
+  form.appendChild(startAgainBtn);
+  document.querySelector("body").appendChild(modal);
+  modal.showModal();
+  startAgainBtn.addEventListener("click", () => {
+    window.reload();
+  });
 };
 
 /* ------------------------------------------------------ Turned-based system ------------------------------------------------------ */
@@ -102,7 +137,7 @@ const chooseNextPlayer = () => {
       playDungeonMasterTurn();
       // Else it means that the DUNGEON MASTER WON
     } else {
-      throw alert("THE DUNGEON MASTER WON!");
+      displayEndGameModal("THE DUNGEON MASTER WON!");
     }
     // Reset the step counter of Lidda
     players.lidda.stepsCount = players.lidda.maxSteps;
@@ -131,7 +166,7 @@ const chooseNextPlayer = () => {
       lidda.classList.add("current-player");
       // Else it means that the DUNGEON MASTER WON
     } else {
-      throw alert("THE DUNGEON MASTER WON!");
+      displayEndGameModal("THE DUNGEON MASTER WON!");
     }
     // Reset the step counter of Jozian
     players.jozian.stepsCount = players.jozian.maxSteps;
@@ -162,7 +197,7 @@ const chooseNextPlayer = () => {
       jozian.classList.add("current-player");
       // Else it means that the DUNGEON MASTER WON
     } else {
-      throw alert("THE DUNGEON MASTER WON!");
+      displayEndGameModal("THE DUNGEON MASTER WON!");
     }
     // Reset the step counter of Mialyë
     players.mialye.stepsCount = players.mialye.maxSteps;
@@ -198,7 +233,7 @@ const chooseNextPlayer = () => {
       regdar.classList.add("current-player");
       // Else it means that the DUNGEON MASTER WON
     } else {
-      throw alert("THE DUNGEON MASTER WON!");
+      displayEndGameModal("THE DUNGEON MASTER WON!");
     }
   }
   // Remove the target
@@ -223,13 +258,12 @@ setInterval(() => {
   document.querySelector("#shield-of-lidda").innerHTML = players.lidda.shield;
   const spacedLiddaInventory =
     players.lidda.inventory.length > 0
-      ? players.lidda.inventory.map((item) => item.replace("_", " "))
+      ? players.lidda.inventory.map((item) => item.replaceAll("_", " "))
       : players.lidda.inventory;
   document.querySelector("#inventory-of-lidda").innerHTML =
     spacedLiddaInventory;
-  document.querySelector("#weapon-of-lidda").innerHTML = players.lidda.weapon
-    .replace("_", " ")
-    .replace("_", " ");
+  document.querySelector("#weapon-of-lidda").innerHTML =
+    players.lidda.weapon.replaceAll("_", " ");
 
   document.querySelector("#life-of-jozian").innerHTML = players.jozian.health;
   document.querySelector("#mana-of-jozian").innerHTML = players.jozian.mana;
@@ -238,13 +272,12 @@ setInterval(() => {
   document.querySelector("#shield-of-jozian").innerHTML = players.jozian.shield;
   const spacedJozianInventory =
     players.jozian.inventory.length > 0
-      ? players.jozian.inventory.map((item) => item.replace("_", " "))
+      ? players.jozian.inventory.map((item) => item.replaceAll("_", " "))
       : players.jozian.inventory;
   document.querySelector("#inventory-of-jozian").innerHTML =
     spacedJozianInventory;
-  document.querySelector("#weapon-of-jozian").innerHTML = players.jozian.weapon
-    .replace("_", " ")
-    .replace("_", " ");
+  document.querySelector("#weapon-of-jozian").innerHTML =
+    players.jozian.weapon.replaceAll("_", " ");
 
   document.querySelector("#life-of-mialye").innerHTML = players.mialye.health;
   document.querySelector("#mana-of-mialye").innerHTML = players.mialye.mana;
@@ -253,13 +286,12 @@ setInterval(() => {
   document.querySelector("#shield-of-mialye").innerHTML = players.mialye.shield;
   const spacedMialyeInventory =
     players.mialye.inventory.length > 0
-      ? players.mialye.inventory.map((item) => item.replace("_", " "))
+      ? players.mialye.inventory.map((item) => item.replaceAll("_", " "))
       : players.mialye.inventory;
   document.querySelector("#inventory-of-mialye").innerHTML =
     spacedMialyeInventory;
-  document.querySelector("#weapon-of-mialye").innerHTML = players.mialye.weapon
-    .replace("_", " ")
-    .replace("_", " ").to;
+  document.querySelector("#weapon-of-mialye").innerHTML =
+    players.mialye.weapon.replaceAll("_", " ");
 
   document.querySelector("#life-of-regdar").innerHTML = players.regdar.health;
   document.querySelector("#mana-of-regdar").innerHTML = players.regdar.mana;
@@ -268,19 +300,18 @@ setInterval(() => {
   document.querySelector("#shield-of-regdar").innerHTML = players.regdar.shield;
   const spacedRegdarInventory =
     players.regdar.inventory.length > 0
-      ? players.regdar.inventory.map((item) => item.replace("_", " "))
+      ? players.regdar.inventory.map((item) => item.replaceAll("_", " "))
       : players.regdar.inventory;
   document.querySelector("#inventory-of-regdar").innerHTML =
     spacedRegdarInventory;
-  document.querySelector("#weapon-of-regdar").innerHTML = players.regdar.weapon
-    .replace("_", " ")
-    .replace("_", " ");
+  document.querySelector("#weapon-of-regdar").innerHTML =
+    players.regdar.weapon.replaceAll("_", " ");
 }, 1000);
 
 /* ------------------------------------------------------- Event listeners ------------------------------------------------------- */
 
 window.addEventListener("load", () => {
-  console.log("loaded");
+  console.log();
   document.querySelector("#game-map").style.backgroundImage =
     "url(img/dnd-logo.png)";
   setTimeout(() => {
@@ -329,10 +360,35 @@ document.querySelector("#btn-attack").addEventListener("click", () => {
   let selectedPositionObject = monsters[selectedPosition.id];
 
   if (currentPlayerObject.attackCount < 1) {
-    throw alert("You already attacked during this turn!");
+    displayModal("You already attacked during this turn");
   } else {
     if (totalDistanceWithSelected() === 1)
       receiveDamage(selectedPositionObject, weaponAttack(currentPlayerObject));
+    currentPlayerObject.attackCount--;
+    if (selectedPositionObject.health <= 0) {
+      selectedPosition.id = "";
+      selectedPosition.classList.remove("is-selected");
+      selectedPosition.classList.remove("monster");
+      selectedPosition.classList.add("dead-body");
+    }
+  }
+});
+
+document.querySelector("#btn-spell").addEventListener("click", () => {
+  let currentPlayerPosition = document.querySelector(".current-player");
+  let currentPlayerObject = players[currentPlayerPosition.id];
+  let selectedPosition = document.querySelector(".is-selected");
+  let selectedPositionObject = monsters[selectedPosition.id];
+
+  if (currentPlayerObject.attackCount < 1) {
+    displayModal("You already attacked during this turn!");
+  } else if (totalDistanceWithSelected() > 2) {
+    displayModal("You are too far away from the monster!");
+  } else if (spells[currentPlayerObject.spell].type !== "attack") {
+    displayModal("You can't attack with your current equipped spell!");
+  } else {
+    if (totalDistanceWithSelected() <= 2)
+      receiveDamage(selectedPositionObject, spellAttack(currentPlayerObject));
     currentPlayerObject.attackCount--;
     if (selectedPositionObject.health <= 0) {
       selectedPosition.id = "";
@@ -352,7 +408,7 @@ document.querySelector("#btn-search").addEventListener("click", () => {
     totalDistanceWithSelected() > 1 &&
     selectedPosition.classList.contains("locked-chest")
   ) {
-    throw alert("You are too far from the chest to open it!");
+    displayModal("You are too far from the chest to open it!");
   } else if (
     totalDistanceWithSelected() === 1 &&
     selectedPosition.classList.contains("locked-chest")
@@ -362,7 +418,7 @@ document.querySelector("#btn-search").addEventListener("click", () => {
       currentPlayerObject.inventoryCapacity
     ) {
       selectedPosition.classList.remove("is-selected");
-      throw alert("You are already at full capacity!");
+      displayModal("You are already at full capacity!");
     } else {
       soundChestOpened.play();
       selectedPosition.classList.remove("locked-chest");
@@ -377,12 +433,15 @@ document.querySelector("#btn-heal").addEventListener("click", () => {
   let currentPlayerPosition = document.querySelector(".current-player");
   let currentPlayerObject = players[currentPlayerPosition.id];
   let selectedPosition = document.querySelector(".is-selected");
-  let selectedPositionObject = monsters[selectedPosition.id];
+  let selectedPositionObject = players[selectedPosition.id];
 
   if (selectedPosition.classList.contains("monster")) {
-    throw alert("You can't heal a monster!");
+    displayModal("You can't heal a monster!");
+  } else if (totalDistanceWithSelected() > 2) {
+    displayModal("You are too far away to heal the player!");
   } else {
     healPlayer(currentPlayerObject, selectedPositionObject);
+    selectedPosition.classList.remove("is-selected");
   }
 });
 

@@ -6,10 +6,29 @@ import { dice, throwDice } from "./dice.js";
 import { totalDistanceWithSelected } from "./motion.js";
 import { soundAttack, soundOfDeath, soundUnsuccesfulAttack } from "./sounds.js";
 import { artefacts } from "./artefacts.js";
+import { displayModal } from "./main.js";
 
 /* ---------------------------------------------- Attack and receive damage functions ---------------------------------------------- */
 
 // Function that receives an attacker as its argument and returns the sum of rolling dice corresponding to the weapon
+
+const removeDiceDisplayAfter2Seconds = () => {
+  setTimeout(() => {
+    document.querySelector("#state").innerHTML = "";
+  }, 2000);
+};
+
+const removeSelectedPosition = () => {
+  if (document.querySelector(".is-selected"))
+    document.querySelector(".is-selected").classList.remove("is-selected");
+};
+
+const removeCurrentPlayer = () => {
+  if (document.querySelector(".current-player"))
+    document
+      .querySelector(".current-player")
+      .classList.remove("current-player");
+};
 
 export const weaponAttack = (attacker) => {
   let totalDamageCounter = 0;
@@ -18,14 +37,8 @@ export const weaponAttack = (attacker) => {
     totalDamageCounter += throwDice(dice[dieElement]);
   });
 
-  // Retirer les images des dés après 2 secondes
-  setTimeout(() => {
-    document.querySelector("#state").innerHTML = "";
-  }, 2000);
-
-  // Retirer is-selected si existe
-  if (document.querySelector(".current-player"))
-    document.querySelector(".current-player").classList.remove("is-selected");
+  removeDiceDisplayAfter2Seconds();
+  removeSelectedPosition();
 
   return totalDamageCounter;
 };
@@ -41,6 +54,9 @@ export const spellAttack = (caster) => {
   });
 
   caster.mana -= spells[caster.spell].cost;
+
+  removeDiceDisplayAfter2Seconds();
+  removeSelectedPosition();
 
   return totalDamageCounter;
 };
@@ -76,11 +92,11 @@ export const receiveDamage = (playerOrMonster, damage) => {
 
 export const healPlayer = (caster, player) => {
   if (player.health <= 0)
-    throw alert(
+    displayModal(
       `${player.name} is dead! You can only save him with a resurrection spell.`
     );
   else if (player.health === player.maxHealth) {
-    throw alert(`${player.name} already has full life points!`);
+    displayModal(`${player.name} already has full life points!`);
   } else {
     let totalHealCounter = 0;
 
@@ -90,7 +106,11 @@ export const healPlayer = (caster, player) => {
     });
 
     player.health += totalHealCounter;
+    if (player.health > player.maxHealth) player.health = player.maxHealth;
     caster.mana -= spells[caster.spell].cost;
+
+    removeDiceDisplayAfter2Seconds();
+    removeSelectedPosition();
   }
 };
 
@@ -116,20 +136,22 @@ export const monsterAttack = () => {
       // Si le monstre est sur une case adjacente est peut attaquer (son compteur n'est pas à 0) alors il attaque
       if (distance <= 1) {
         receiveDamage(heroObject, weaponAttack(monsterObject));
+        break;
       }
       // Gérer le cas où le coup est fatal pour le héros
       if (heroObject.health <= 0) {
         heroObject.isAlive = false;
+        heroObject.health = 0;
         allLivingHeroes[i].classList.add("to-delete");
         allLivingHeroes[i].classList.remove("is-selected");
+        break;
       } else {
         allLivingHeroes[i].classList.remove("is-selected");
       }
     }
   });
   // A la fin de toutes les boucles monstres, retirer le statut de current player au dernier monstre et le réattribuer au maître du donjon
-  let currentPlayer = document.querySelector(".current-player");
-  currentPlayer.classList.remove("current-player");
+  removeCurrentPlayer();
   document.querySelector("#dungeonMaster").classList.add("current-player");
 };
 
@@ -159,5 +181,3 @@ export const addRandomObjectToInventory = (player) => {
     if (newObject === "moshuga_turtle_shield") player.shield += 1;
   }
 };
-// Si l'objet est obtenu est true_seeing_orb, alors exécution de artefacts[true_seeing_orb].action()
-// Si l'objet obtenu est moshuga_turtle_shieild, alors le player.shield += 1;

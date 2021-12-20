@@ -2,6 +2,7 @@ import { players } from "./players.js";
 import { traps } from "./traps.js";
 import { monsters } from "./monsters.js";
 import { soundTrapActivated } from "./sounds.js";
+import { displayModal } from "./main.js";
 
 /* ------------------------------------ Get the players object (from the players.js file) ----------------------------------------------- */
 
@@ -75,9 +76,10 @@ const checkIfPlayerCanMove = (playerObject, target) => {
 /* --------------------------- Updates a player's health depending on the damage inflicted by the trap  ------------------------------------- */
 
 const receiveTrapDamage = (player, damage) => {
-  if (damage >= player.health + player.shield) {
+  if (damage >= player.health) {
     player.isAlive = false;
-    throw alert(`${player.name} is dead`);
+    player.health = 0;
+    displayModal(`${player.name} is dead. R.I.P.`);
   } else {
     player.health -= damage;
   }
@@ -92,7 +94,7 @@ export const playerMotion = (event) => {
   let canMove = checkIfPlayerCanMove(getCurrentPlayer(), newPosition);
 
   if (newPosition === currentPosition)
-    console.log("Yup, it's you. Want a cookie?");
+    displayModal("Yup, it's you. Want a cookie?");
   else if (
     newPosition.classList.contains("hero") ||
     newPosition.classList.contains("monster") ||
@@ -107,12 +109,12 @@ export const playerMotion = (event) => {
     !canMove ||
     currentPlayerObject.stepsCount < totalDistanceWithTarget(newPosition)
   )
-    throw alert("You don't have enough steps left!");
+    displayModal("You don't have enough steps left!");
   else if (
     newPosition.classList.contains("wall") ||
     newPosition.classList.contains("pillar")
   )
-    throw alert("You can't go there!");
+    displayModal("You can't go there!");
   // If that target of the click is a player or an object (apart from the)
   else {
     // update the stepsCount of the player by removing the current distance
@@ -127,7 +129,7 @@ export const playerMotion = (event) => {
     newPosition.id = currentPosition.id;
     currentPosition.id = "";
     // Handle the case where the player also receives damage because it's a trap
-    // & change the square's image to indicate that the trap is disabled and you can walk on it
+    // And change the square's image to indicate that the trap is disabled and you can walk on it
     if (newPosition.classList.contains("active-hole-trap")) {
       receiveTrapDamage(currentPlayerObject, traps.hole);
       newPosition.classList.remove("active-hole-trap");
@@ -149,6 +151,21 @@ export const playerMotion = (event) => {
 
 /* -------------------- Move a monster if it is withing reach of a player (but not if can already attack)  ------------------------------ */
 
+const checkIfTargetedSquareIsValid = (square) => {
+  if (
+    square.id !== undefined &&
+    !square.classList.contains("hero") &&
+    !square.classList.contains("monster") &&
+    !square.classList.contains("wall") &&
+    !square.classList.contains("pillar") &&
+    !square.classList.contains("opened-chest") &&
+    !square.classList.contains("locked-chest") &&
+    !square.classList.contains("door")
+  )
+    return true;
+  else return false;
+};
+
 export const moveMonsters = () => {
   // QuerySelectorAllMonstersAlive and heroesalive
   let allLivingMonsters = document.querySelectorAll(".monster");
@@ -156,12 +173,20 @@ export const moveMonsters = () => {
   // Boucle sur tous les monstres
   for (let i = 0; i < allLivingMonsters.length; i++) {
     // Boucle sur chaque monstre (chaque monstre devient le current-player fictivement)
-    let currentPlayer = document.querySelector(".current-player");
-    currentPlayer.classList.remove("current-player");
+    // S'assurer de bien enlever la classe current player à une case existante pour qu'il n'y ait pas deux current players
+    if (document.querySelector(".current-player"))
+      document
+        .querySelector(".current-player")
+        .classList.remove("current-player");
+    // Faire de chaque monstre le current player à chaque itération
     allLivingMonsters[i].classList.add("current-player");
+    // Récupérer la référence de l'objet du monstre correspondant
     let monsterObject = monsters[document.querySelector(".current-player").id];
     // Boucle sur chaque héros
     for (let j = 0; j < allLivingHeroes.length; j++) {
+      // S'assurer de bien enlever la classe is-selected à une case existante pour qu'il n'y ait pas deux current selected
+      if (document.querySelector(".is-selected"))
+        document.querySelector(".is-selected").classList.remove("is-selected");
       // Sélectionner le héro à chaque fois
       allLivingHeroes[j].classList.add("is-selected");
       // Pour chaque héro ciblé, à quelle distance du monstre est-il ?
@@ -195,60 +220,28 @@ export const moveMonsters = () => {
           `[data-x='${yMinusOneAttr}'][data-y='${xAttrOfHero}']`
         );
 
-        if (
-          xPlusOneSquareOfHero.id !== undefined &&
-          !xPlusOneSquareOfHero.classList.contains("hero") &&
-          !xPlusOneSquareOfHero.classList.contains("monster") &&
-          !xPlusOneSquareOfHero.classList.contains("wall") &&
-          !xPlusOneSquareOfHero.classList.contains("opened-chest") &&
-          !xPlusOneSquareOfHero.classList.contains("locked-chest") &&
-          !xPlusOneSquareOfHero.classList.contains("door")
-        ) {
+        if (checkIfTargetedSquareIsValid(xPlusOneSquareOfHero)) {
           xPlusOneSquareOfHero.classList.add("monster");
           xPlusOneSquareOfHero.classList.add("current-player");
           xPlusOneSquareOfHero.id = `${monsterObject.name.toLowerCase()}`;
           allLivingMonsters[i].classList.remove("monster");
           allLivingMonsters[i].classList.remove("current-player");
           allLivingMonsters[i].id = "";
-        } else if (
-          xMinusOneSquareOfHero.id !== undefined &&
-          !xMinusOneSquareOfHero.classList.contains("hero") &&
-          !xMinusOneSquareOfHero.classList.contains("monster") &&
-          !xMinusOneSquareOfHero.classList.contains("wall") &&
-          !xMinusOneSquareOfHero.classList.contains("opened-chest") &&
-          !xMinusOneSquareOfHero.classList.contains("locked-chest") &&
-          !xMinusOneSquareOfHero.classList.contains("door")
-        ) {
+        } else if (checkIfTargetedSquareIsValid(xMinusOneSquareOfHero)) {
           xMinusOneSquareOfHero.classList.add("monster");
           xMinusOneSquareOfHero.classList.add("current-player");
           xMinusOneSquareOfHero.id = `${monsterObject.name.toLowerCase()}`;
           allLivingMonsters[i].classList.remove("monster");
           allLivingMonsters[i].classList.remove("current-player");
           allLivingMonsters[i].id = "";
-        } else if (
-          yPlusOneSquareOfHero.id !== undefined &&
-          !yPlusOneSquareOfHero.classList.contains("hero") &&
-          !yPlusOneSquareOfHero.classList.contains("monster") &&
-          !yPlusOneSquareOfHero.classList.contains("wall") &&
-          !yPlusOneSquareOfHero.classList.contains("opened-chest") &&
-          !yPlusOneSquareOfHero.classList.contains("locked-chest") &&
-          !yPlusOneSquareOfHero.classList.contains("door")
-        ) {
+        } else if (checkIfTargetedSquareIsValid(yPlusOneSquareOfHero)) {
           yPlusOneSquareOfHero.classList.add("monster");
           yPlusOneSquareOfHero.classList.add("current-player");
           yPlusOneSquareOfHero.id = `${monsterObject.name.toLowerCase()}`;
           allLivingMonsters[i].classList.remove("monster");
           allLivingMonsters[i].classList.remove("current-player");
           allLivingMonsters[i].id = "";
-        } else if (
-          yMinusOneSquareOfHero.id !== undefined &&
-          !yMinusOneSquareOfHero.classList.contains("hero") &&
-          !yMinusOneSquareOfHero.classList.contains("monster") &&
-          !yMinusOneSquareOfHero.classList.contains("wall") &&
-          !yMinusOneSquareOfHero.classList.contains("opened-chest") &&
-          !yMinusOneSquareOfHero.classList.contains("locked-chest") &&
-          !yMinusOneSquareOfHero.classList.contains("door")
-        ) {
+        } else if (checkIfTargetedSquareIsValid(yMinusOneSquareOfHero)) {
           yMinusOneSquareOfHero.classList.add("monster");
           yMinusOneSquareOfHero.classList.add("current-player");
           yMinusOneSquareOfHero.id = `${monsterObject.name.toLowerCase()}`;
