@@ -74,7 +74,7 @@ export const displayEndGameModal = (text) => {
   document.querySelector("body").appendChild(modal);
   modal.showModal();
   startAgainBtn.addEventListener("click", () => {
-    window.reload();
+    window.location.reload();
   });
 };
 
@@ -98,11 +98,13 @@ const removeDeadHero = (deadHeroHTMLElement) => {
   }
 };
 
-// Check if the players won over the dungeon master
-setInterval(() => {
-  if (!document.querySelector("#lichking"))
-    displayEndGameModal("VICTORY! You defeated the Lich King!");
-}, 1000);
+// Check if the players won over the dungeon master (but start only after the page loaded completely)
+setTimeout(() => {
+  setInterval(() => {
+    if (!document.querySelector("#lichking"))
+      displayEndGameModal("VICTORY! You defeated the Lich King!");
+  }, 1000);
+}, 25000);
 
 /* ------------------------------------------------------ Turned-based system ------------------------------------------------------ */
 

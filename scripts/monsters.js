@@ -26,7 +26,7 @@ export const monsters = {
   },
 
   minotaur: {
-    name: "Minautor",
+    name: "Minotaur",
     health: 8,
     mana: null,
     skills: null,
