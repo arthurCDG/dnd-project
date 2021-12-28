@@ -95,6 +95,8 @@ export const healPlayer = (caster, player) => {
     displayModal(
       `${player.name} is dead! You can only save him with a resurrection spell.`
     );
+  else if (caster.mana < spells[caster.spell].cost)
+    displayModal("You don't have enough mana for this spell!");
   else if (player.health === player.maxHealth) {
     displayModal(`${player.name} already has full life points!`);
   } else {
@@ -108,6 +110,8 @@ export const healPlayer = (caster, player) => {
     player.health += totalHealCounter;
     if (player.health > player.maxHealth) player.health = player.maxHealth;
     caster.mana -= spells[caster.spell].cost;
+
+    if (caster.mana < 0) caster.mana = 0;
 
     removeDiceDisplayAfter2Seconds();
     removeSelectedPosition();

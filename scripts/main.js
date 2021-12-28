@@ -52,11 +52,12 @@ export const displayModal = (text) => {
   const closeBtn = document.createElement("button");
   closeBtn.classList.add("btn");
   closeBtn.innerText = "close";
+  // modal.appendChild(closeBtn);
   form.appendChild(closeBtn);
   document.querySelector("body").appendChild(modal);
   modal.showModal();
   closeBtn.addEventListener("click", () => {
-    modal.closeModal("closed modal");
+    modal.close("closed modal");
   });
 };
 
@@ -115,6 +116,8 @@ const playDungeonMasterTurn = () => {
   monsterAttack();
   // Trigger the function to see if some heroes are dead
   removeDeadHero(isThereADeadHero());
+  // Automatically change Current Player to the next one
+  chooseNextPlayer();
 };
 
 const chooseNextPlayer = () => {
@@ -365,8 +368,14 @@ document.querySelector("#btn-attack").addEventListener("click", () => {
   let selectedPosition = document.querySelector(".is-selected");
   let selectedPositionObject = monsters[selectedPosition.id];
 
-  if (currentPlayerObject.attackCount < 1) {
+  if (selectedPosition.classList.contains("hero")) {
+    displayModal("You can't attack another hero!");
+  } else if (selectedPosition.classList.contains("locked-chest")) {
+    displayModal("Click on Search if you wish to open the chest!");
+  } else if (currentPlayerObject.attackCount < 1) {
     displayModal("You already attacked during this turn");
+  } else if (totalDistanceWithSelected() > 1) {
+    displayModal("You are too far away from the monster!");
   } else {
     if (totalDistanceWithSelected() === 1)
       receiveDamage(selectedPositionObject, weaponAttack(currentPlayerObject));
@@ -386,7 +395,9 @@ document.querySelector("#btn-spell").addEventListener("click", () => {
   let selectedPosition = document.querySelector(".is-selected");
   let selectedPositionObject = monsters[selectedPosition.id];
 
-  if (currentPlayerObject.attackCount < 1) {
+  if (selectedPosition.classList.contains("hero")) {
+    displayModal("You can't attack another hero!");
+  } else if (currentPlayerObject.attackCount < 1) {
     displayModal("You already attacked during this turn!");
   } else if (totalDistanceWithSelected() > 2) {
     displayModal("You are too far away from the monster!");

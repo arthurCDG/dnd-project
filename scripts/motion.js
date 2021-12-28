@@ -87,6 +87,13 @@ const receiveTrapDamage = (player, damage) => {
 
 /* ---- Move a player to a targeted square of the gameboard or select sth to interract with(callback of addEventListener on all squares) ---- */
 
+const showPlayerMotionPossibilities = () => {
+  let currentPosition = document.querySelector(".current-player");
+  let currentPlayerObject = players[currentPosition.id];
+
+  // Loop to check if a game square is available for a player (==> is within range and is not a pillar/chest/monster/hero)
+};
+
 export const playerMotion = (event) => {
   let currentPosition = document.querySelector(".current-player");
   let currentPlayerObject = players[currentPosition.id];
