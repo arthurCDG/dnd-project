@@ -107,7 +107,10 @@ export const showPlayerMotionPossibilities = () => {
           let squareToColor = document.querySelector(
             `[data-x='${i}'][data-y='${j}']`
           );
-          squareToColor.classList.add("motion-possible");
+
+          if (checkIfTargetedSquareIsValid(squareToColor)) {
+            squareToColor.classList.add("motion-possible");
+          }
         }
       }
     }
