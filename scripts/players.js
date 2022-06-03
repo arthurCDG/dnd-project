@@ -9,6 +9,8 @@ export const players = {
     stepsCount: 5,
     attackCount: 1,
     maxAttackCount: 1,
+    healCount: 1,
+    maxHealCount: 1,
     shield: 2,
     weapon: "crossbow_of_faith",
     spell: "ultimate_restoration_spell",
@@ -26,6 +28,8 @@ export const players = {
     stepsCount: 4,
     attackCount: 1,
     maxAttackCount: 1,
+    healCount: 0,
+    maxHealCount: 0,
     shield: 2,
     weapon: "large_sword",
     spell: "",
@@ -43,6 +47,8 @@ export const players = {
     stepsCount: 6,
     attackCount: 1,
     maxAttackCount: 1,
+    healCount: 1,
+    maxHealCount: 1,
     shield: 2,
     weapon: "balanced_throwing_dagger",
     spell: "first_aid",
@@ -60,6 +66,8 @@ export const players = {
     stepsCount: 5,
     attackCount: 1,
     maxAttackCount: 1,
+    healCount: 1,
+    maxHealCount: 1,
     shield: 2,
     weapon: "ancient_short_bow",
     spell: "magic_projectile",
@@ -71,3 +79,9 @@ export const players = {
     name: "Dungeon Master",
   },
 };
+
+export const playersAndDungeonMasterArray = Object.keys(players);
+
+export const playersArray = playersAndDungeonMasterArray.filter(
+  (el) => el !== "dungeonMaster"
+);

@@ -6,7 +6,7 @@ import { dice, throwDice } from "./dice.js";
 import { totalDistanceWithSelected } from "./motion.js";
 import { soundAttack, soundOfDeath, soundUnsuccesfulAttack } from "./sounds.js";
 import { artefacts } from "./artefacts.js";
-import { displayModal } from "./main.js";
+import { displayModal, updateVisuallyPlayersStats, updateVisuallyMonstersStats } from "./main.js";
 
 /* ---------------------------------------------- Attack and receive damage functions ---------------------------------------------- */
 
@@ -77,11 +77,13 @@ export const receiveDamage = (playerOrMonster, damage) => {
       document.querySelector(".current-player").classList.add("dead-body");
     }
   } else if (damage >= playerOrMonster.health + playerOrMonster.shield) {
-    playerOrMonster.health -= damage - playerOrMonster.shield;
+    playerOrMonster.health = 0;
     playerOrMonster.isAlive = false;
     soundOfDeath.play();
   } else if (damage > playerOrMonster.shield) {
     playerOrMonster.health -= damage - playerOrMonster.shield;
+    updateVisuallyPlayersStats();
+    updateVisuallyMonstersStats();
     soundAttack.play();
   } else {
     soundUnsuccesfulAttack.play();
@@ -143,9 +145,7 @@ export const monsterAttack = () => {
         break;
       }
       // Gérer le cas où le coup est fatal pour le héros
-      if (heroObject.health <= 0) {
-        heroObject.isAlive = false;
-        heroObject.health = 0;
+      if (heroObject.isAlive === false) {
         allLivingHeroes[i].classList.add("to-delete");
         allLivingHeroes[i].classList.remove("is-selected");
         break;

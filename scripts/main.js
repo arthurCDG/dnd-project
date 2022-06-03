@@ -1,5 +1,9 @@
-import { players } from "./players.js";
-import { monsters } from "./monsters.js";
+import {
+  players,
+  playersArray,
+  playersAndDungeonMasterArray,
+} from "./players.js";
+import { monsters, monstersArray } from "./monsters.js";
 import { spells } from "./spells.js";
 import { weapons } from "./weapons.js";
 import { dice, throwDice } from "./dice.js";
@@ -15,6 +19,8 @@ import {
   totalDistanceWithTarget,
   totalDistanceWithSelected,
   moveMonsters,
+  showPlayerMotionPossibilities,
+  hidePlayerMotionPossibilities,
 } from "./motion.js";
 import {
   weaponAttack,
@@ -82,30 +88,37 @@ export const displayEndGameModal = (text) => {
 /* ------------------------------------- Check if an hero is dead or if they won over DM --------------------------------------- */
 
 // Regarder si un héro est mort. Si oui, retourne l'élément HTML correspondant au héro mort.
-const isThereADeadHero = () => {
-  return document.querySelector(".to-delete")
-    ? document.querySelector(".to-delete")
+const areThereDeadHeros = () => {
+  return document.querySelectorAll(".to-delete")
+    ? document.querySelectorAll(".to-delete")
     : false;
 };
 
-// // If true (il y a un héros mort)
-const removeDeadHero = (deadHeroHTMLElement) => {
-  if (deadHeroHTMLElement !== false) {
-    deadHeroHTMLElement.id = "";
-    deadHeroHTMLElement.classList.remove("is-selected");
-    deadHeroHTMLElement.classList.remove("hero");
-    deadHeroHTMLElement.classList.remove("to-delete");
-    deadHeroHTMLElement.classList.add("dead-body");
+// If true (il y a un héros mort)
+const removeDeadHeros = (deadHerosHTMLElement) => {
+  if (deadHerosHTMLElement !== false) {
+    for (let i = 0; i < deadHerosHTMLElement.length; i++) {
+      deadHerosHTMLElement[i].id = "";
+      deadHerosHTMLElement[i].classList.remove("hero");
+      deadHerosHTMLElement[i].classList.remove("to-delete");
+      deadHerosHTMLElement[i].classList.add("dead-body");
+    }
   }
 };
 
 // Check if the players won over the dungeon master (but start only after the page loaded completely)
-setTimeout(() => {
-  setInterval(() => {
-    if (!document.querySelector("#lichking"))
-      displayEndGameModal("VICTORY! You defeated the Lich King!");
-  }, 1000);
-}, 25000);
+const checkIfPlayersWon = () => {
+  if (!document.querySelector("#lichking"))
+    displayEndGameModal("VICTORY! You defeated the Lich King!");
+};
+
+//! OLD COLD TO ERASE IF THE GAME IS WORKING
+// setTimeout(() => {
+//   setInterval(() => {
+//     if (!document.querySelector("#lichking"))
+//       displayEndGameModal("VICTORY! You defeated the Lich King!");
+//   }, 1000);
+// }, 25000);
 
 /* ------------------------------------------------------ Turned-based system ------------------------------------------------------ */
 
@@ -114,8 +127,10 @@ const playDungeonMasterTurn = () => {
   moveMonsters();
   // Trigger the function to have monsters attack players a second time (for those who havent't already attacked)
   monsterAttack();
+  // Check if the LichKing died attacking the heroes (in case of a shield)
+  checkIfPlayersWon();
   // Trigger the function to see if some heroes are dead
-  removeDeadHero(isThereADeadHero());
+  removeDeadHeros(areThereDeadHeros());
   // Automatically change Current Player to the next one
   chooseNextPlayer();
 };
@@ -123,22 +138,122 @@ const playDungeonMasterTurn = () => {
 const chooseNextPlayer = () => {
   let currentPlayer = document.querySelector(".current-player");
   soundTurnChange.play();
+  hidePlayerMotionPossibilities();
+
+  /* -------------------- Trying to refactor my code from lines 174 and on ------ */
+
+  // for (let i = 0; i < playersAndDungeonMasterArray.length; i++) {
+  //   if (currentPlayer.id === "dungeonMaster") {
+  //     playDungeonMasterTurn();
+  //   } else if (currentPlayer.id === playersAndDungeonMasterArray[i]) {
+  //     // Reset the step counter of the ex current-player
+  //     players[playersAndDungeonMasterArray[i]].stepsCount =
+  //       players[playersAndDungeonMasterArray[i]].maxSteps;
+  //     // Then pass on next player in the array as the current player (if alive)
+  //     if (
+  //       document.querySelector(
+  //         `#${
+  //           playersAndDungeonMasterArray[
+  //             (i + 1) % playersAndDungeonMasterArray.length
+  //           ]
+  //         }`
+  //       )
+  //     ) {
+  //       currentPlayer.classList.remove("current-player");
+  //       const newPlayer = document.querySelector(
+  //         `#${
+  //           playersAndDungeonMasterArray[
+  //             (i + 1) % playersAndDungeonMasterArray.length
+  //           ]
+  //         }`
+  //       );
+  //       newPlayer.classList.add("current-player");
+  //       // showPlayerMotionPossibilities();
+  //     } else if (
+  //       document.querySelector(
+  //         `#${
+  //           playersAndDungeonMasterArray[
+  //             (i + 2) % playersAndDungeonMasterArray.length
+  //           ]
+  //         }`
+  //       )
+  //     ) {
+  //       currentPlayer.classList.remove("current-player");
+  //       const newPlayer = document.querySelector(
+  //         `#${
+  //           playersAndDungeonMasterArray[
+  //             (i + 2) % playersAndDungeonMasterArray.length
+  //           ]
+  //         }`
+  //       );
+  //       newPlayer.classList.add("current-player");
+  //       // showPlayerMotionPossibilities();
+  //     } else if (
+  //       document.querySelector(
+  //         `#${
+  //           playersAndDungeonMasterArray[
+  //             (i + 3) % playersAndDungeonMasterArray.length
+  //           ]
+  //         }`
+  //       )
+  //     ) {
+  //       currentPlayer.classList.remove("current-player");
+  //       const newPlayer = document.querySelector(
+  //         `#${
+  //           playersAndDungeonMasterArray[
+  //             (i + 3) % playersAndDungeonMasterArray.length
+  //           ]
+  //         }`
+  //       );
+  //       newPlayer.classList.add("current-player");
+  //       // showPlayerMotionPossibilities();
+  //     } else if (
+  //       document.querySelector(
+  //         `#${
+  //           playersAndDungeonMasterArray[
+  //             (i + 4) % playersAndDungeonMasterArray.length
+  //           ]
+  //         }`
+  //       )
+  //     ) {
+  //       currentPlayer.classList.remove("current-player");
+  //       const newPlayer = document.querySelector(
+  //         `#${
+  //           playersAndDungeonMasterArray[
+  //             (i + 4) % playersAndDungeonMasterArray.length
+  //           ]
+  //         }`
+  //       );
+  //       newPlayer.classList.add("current-player");
+  //       playDungeonMasterTurn();
+  //       // Else it means that the DUNGEON MASTER WON
+  //     } else {
+  //       displayEndGameModal("THE DUNGEON MASTER WON!");
+  //     }
+  //   }
+  // }
+
+  /* ------------ The good code below ------------------ */
+
   if (currentPlayer.id === "lidda") {
     // Set Jozian as the next player after Lidda if alive
     if (document.querySelector("#jozian")) {
       currentPlayer.classList.remove("current-player");
       const jozian = document.querySelector("#jozian");
       jozian.classList.add("current-player");
+      showPlayerMotionPossibilities();
       // Else set Mialye if alive
     } else if (document.querySelector("#mialye")) {
       currentPlayer.classList.remove("current-player");
       const mialye = document.querySelector("#mialye");
       mialye.classList.add("current-player");
+      showPlayerMotionPossibilities();
       // Else set Regdar if alive
     } else if (document.querySelector("#regdar")) {
       currentPlayer.classList.remove("current-player");
       const regdar = document.querySelector("#regdar");
       regdar.classList.add("current-player");
+      showPlayerMotionPossibilities();
       // Set dungeonMaster as the next player after Regdar
     } else if (document.querySelector("#dungeonMaster")) {
       currentPlayer.classList.remove("current-player");
@@ -158,11 +273,13 @@ const chooseNextPlayer = () => {
       currentPlayer.classList.remove("current-player");
       const mialye = document.querySelector("#mialye");
       mialye.classList.add("current-player");
+      showPlayerMotionPossibilities();
       // Else set Regdar if alive
     } else if (document.querySelector("#regdar")) {
       currentPlayer.classList.remove("current-player");
       const regdar = document.querySelector("#regdar");
       regdar.classList.add("current-player");
+      showPlayerMotionPossibilities();
       // Set dungeonMaster as the next player after Regdar
     } else if (document.querySelector("#dungeonMaster")) {
       currentPlayer.classList.remove("current-player");
@@ -175,6 +292,7 @@ const chooseNextPlayer = () => {
       currentPlayer.classList.remove("current-player");
       const lidda = document.querySelector("#lidda");
       lidda.classList.add("current-player");
+      showPlayerMotionPossibilities();
       // Else it means that the DUNGEON MASTER WON
     } else {
       displayEndGameModal("THE DUNGEON MASTER WON!");
@@ -187,6 +305,7 @@ const chooseNextPlayer = () => {
       currentPlayer.classList.remove("current-player");
       const regdar = document.querySelector("#regdar");
       regdar.classList.add("current-player");
+      showPlayerMotionPossibilities();
     } else if (document.querySelector("#dungeonMaster")) {
       // Set dungeonMaster as the next player after Regdar
       currentPlayer.classList.remove("current-player");
@@ -199,11 +318,13 @@ const chooseNextPlayer = () => {
       currentPlayer.classList.remove("current-player");
       const lidda = document.querySelector("#lidda");
       lidda.classList.add("current-player");
+      showPlayerMotionPossibilities();
       // Else set Jozian if alive
     } else if (document.querySelector("#jozian")) {
       currentPlayer.classList.remove("current-player");
       const jozian = document.querySelector("#jozian");
       jozian.classList.add("current-player");
+      showPlayerMotionPossibilities();
       // Else it means that the DUNGEON MASTER WON
     } else {
       displayEndGameModal("THE DUNGEON MASTER WON!");
@@ -225,100 +346,167 @@ const chooseNextPlayer = () => {
       currentPlayer.classList.remove("current-player");
       const lidda = document.querySelector("#lidda");
       lidda.classList.add("current-player");
+      showPlayerMotionPossibilities();
       // Else set Jozian if alive
     } else if (document.querySelector("#jozian")) {
       currentPlayer.classList.remove("current-player");
       const jozian = document.querySelector("#jozian");
       jozian.classList.add("current-player");
+      showPlayerMotionPossibilities();
       // Else set Mialye if alive
     } else if (document.querySelector("#mialye")) {
       currentPlayer.classList.remove("current-player");
       const mialye = document.querySelector("#mialye");
       mialye.classList.add("current-player");
+      showPlayerMotionPossibilities();
       // Else set Regdar if alive
     } else if (document.querySelector("#regdar")) {
       currentPlayer.classList.remove("current-player");
       const regdar = document.querySelector("#regdar");
       regdar.classList.add("current-player");
+      showPlayerMotionPossibilities();
       // Else it means that the DUNGEON MASTER WON
     } else {
       displayEndGameModal("THE DUNGEON MASTER WON!");
     }
   }
+
   // Remove the target
   if (document.querySelector(".is-selected")) {
     let selected = document.querySelector(".is-selected");
     selected.classList.remove("is-selected");
   }
+
   // Reset all attack counts
   players.lidda.attackCount = players.lidda.maxAttackCount;
   players.jozian.attackCount = players.jozian.maxAttackCount;
   players.mialye.attackCount = players.mialye.maxAttackCount;
   players.regdar.attackCount = players.regdar.maxAttackCount;
+  // Reset all heal counts
+  players.lidda.healCount = players.lidda.maxHealCount;
+  players.jozian.healCount = players.jozian.maxHealCount;
+  players.mialye.healCount = players.mialye.maxHealCount;
+  players.regdar.healCount = players.regdar.maxHealCount;
 };
 
 /* ----------------------------------------- Intervals to update players stats every second ------------------------------------- */
 
-setInterval(() => {
-  document.querySelector("#life-of-lidda").innerHTML = players.lidda.health;
-  document.querySelector("#mana-of-lidda").innerHTML = players.lidda.mana;
-  document.querySelector("#steps-of-lidda").innerHTML =
-    players.lidda.stepsCount;
-  document.querySelector("#shield-of-lidda").innerHTML = players.lidda.shield;
-  const spacedLiddaInventory =
-    players.lidda.inventory.length > 0
-      ? players.lidda.inventory.map((item) => item.replaceAll("_", " "))
-      : players.lidda.inventory;
-  document.querySelector("#inventory-of-lidda").innerHTML =
-    spacedLiddaInventory;
-  document.querySelector("#weapon-of-lidda").innerHTML =
-    players.lidda.weapon.replaceAll("_", " ");
+// Function to update each player's stats visually
+export const updateVisuallyPlayersStats = () => {
+  playersArray.forEach((player) => {
+    document.querySelector(`#life-of-${player}`).innerHTML =
+      players[`${player}`].health;
+    document.querySelector(`#mana-of-${player}`).innerHTML =
+      players[`${player}`].mana;
+    document.querySelector(`#steps-of-${player}`).innerHTML =
+      players[`${player}`].stepsCount;
+    document.querySelector(`#shield-of-${player}`).innerHTML =
+      players[`${player}`].shield;
 
-  document.querySelector("#life-of-jozian").innerHTML = players.jozian.health;
-  document.querySelector("#mana-of-jozian").innerHTML = players.jozian.mana;
-  document.querySelector("#steps-of-jozian").innerHTML =
-    players.jozian.stepsCount;
-  document.querySelector("#shield-of-jozian").innerHTML = players.jozian.shield;
-  const spacedJozianInventory =
-    players.jozian.inventory.length > 0
-      ? players.jozian.inventory.map((item) => item.replaceAll("_", " "))
-      : players.jozian.inventory;
-  document.querySelector("#inventory-of-jozian").innerHTML =
-    spacedJozianInventory;
-  document.querySelector("#weapon-of-jozian").innerHTML =
-    players.jozian.weapon.replaceAll("_", " ");
+    const spacedPlayerInventory =
+      players[`${player}`].inventory.length > 0
+        ? players[`${player}`].inventory.map((item) =>
+            item.replaceAll("_", " ")
+          )
+        : players[`${player}`].inventory;
 
-  document.querySelector("#life-of-mialye").innerHTML = players.mialye.health;
-  document.querySelector("#mana-of-mialye").innerHTML = players.mialye.mana;
-  document.querySelector("#steps-of-mialye").innerHTML =
-    players.mialye.stepsCount;
-  document.querySelector("#shield-of-mialye").innerHTML = players.mialye.shield;
-  const spacedMialyeInventory =
-    players.mialye.inventory.length > 0
-      ? players.mialye.inventory.map((item) => item.replaceAll("_", " "))
-      : players.mialye.inventory;
-  document.querySelector("#inventory-of-mialye").innerHTML =
-    spacedMialyeInventory;
-  document.querySelector("#weapon-of-mialye").innerHTML =
-    players.mialye.weapon.replaceAll("_", " ");
+    document.querySelector(`#inventory-of-${player}`).innerHTML =
+      spacedPlayerInventory;
+    document.querySelector(`#weapon-of-${player}`).innerHTML = players[
+      `${player}`
+    ].weapon.replaceAll("_", " ");
+  });
+};
 
-  document.querySelector("#life-of-regdar").innerHTML = players.regdar.health;
-  document.querySelector("#mana-of-regdar").innerHTML = players.regdar.mana;
-  document.querySelector("#steps-of-regdar").innerHTML =
-    players.regdar.stepsCount;
-  document.querySelector("#shield-of-regdar").innerHTML = players.regdar.shield;
-  const spacedRegdarInventory =
-    players.regdar.inventory.length > 0
-      ? players.regdar.inventory.map((item) => item.replaceAll("_", " "))
-      : players.regdar.inventory;
-  document.querySelector("#inventory-of-regdar").innerHTML =
-    spacedRegdarInventory;
-  document.querySelector("#weapon-of-regdar").innerHTML =
-    players.regdar.weapon.replaceAll("_", " ");
-}, 1000);
+// Function to update each monster's stats visually
+export const updateVisuallyMonstersStats = () => {
+  // monstersArray.forEach((monster) => {
+  //   document.querySelector(`#life-of-${monster}`).innerHTML =
+  //     monsters[`${monster}`].health;
+  //   document.querySelector(`#mana-of-${monster}`).innerHTML =
+  //     monsters[`${monster}`].mana;
+  //   document.querySelector(`#steps-of-${monster}`).innerHTML =
+  //     monsters[`${monster}`].stepsCount;
+  //   document.querySelector(`#shield-of-${monster}`).innerHTML =
+  //     monsters[`${monster}`].shield;
+
+  //   const spacedMonsterInventory =
+  //     monsters[`${monster}`].inventory.length > 0
+  //       ? monsters[`${monster}`].inventory.map((item) =>
+  //           item.replaceAll("_", " ")
+  //         )
+  //       : monsters[`${monster}`].inventory;
+
+  //   document.querySelector(`#inventory-of-${monster}`).innerHTML =
+  //     spacedMonsterInventory;
+  //   document.querySelector(`#weapon-of-${monster}`).innerHTML = monsters[
+  //     `${monster}`
+  //   ].weapon.replaceAll("_", " ");
+  // });
+};
+
+//! OLD CODE TO ERASE IF THE GAME IS WORKING
+// setInterval(() => {
+//   document.querySelector("#life-of-lidda").innerHTML = players.lidda.health;
+//   document.querySelector("#mana-of-lidda").innerHTML = players.lidda.mana;
+//   document.querySelector("#steps-of-lidda").innerHTML =
+//     players.lidda.stepsCount;
+//   document.querySelector("#shield-of-lidda").innerHTML = players.lidda.shield;
+//   const spacedLiddaInventory =
+//     players.lidda.inventory.length > 0
+//       ? players.lidda.inventory.map((item) => item.replaceAll("_", " "))
+//       : players.lidda.inventory;
+//   document.querySelector("#inventory-of-lidda").innerHTML =
+//     spacedLiddaInventory;
+//   document.querySelector("#weapon-of-lidda").innerHTML =
+//     players.lidda.weapon.replaceAll("_", " ");
+
+//   document.querySelector("#life-of-jozian").innerHTML = players.jozian.health;
+//   document.querySelector("#mana-of-jozian").innerHTML = players.jozian.mana;
+//   document.querySelector("#steps-of-jozian").innerHTML =
+//     players.jozian.stepsCount;
+//   document.querySelector("#shield-of-jozian").innerHTML = players.jozian.shield;
+//   const spacedJozianInventory =
+//     players.jozian.inventory.length > 0
+//       ? players.jozian.inventory.map((item) => item.replaceAll("_", " "))
+//       : players.jozian.inventory;
+//   document.querySelector("#inventory-of-jozian").innerHTML =
+//     spacedJozianInventory;
+//   document.querySelector("#weapon-of-jozian").innerHTML =
+//     players.jozian.weapon.replaceAll("_", " ");
+
+//   document.querySelector("#life-of-mialye").innerHTML = players.mialye.health;
+//   document.querySelector("#mana-of-mialye").innerHTML = players.mialye.mana;
+//   document.querySelector("#steps-of-mialye").innerHTML =
+//     players.mialye.stepsCount;
+//   document.querySelector("#shield-of-mialye").innerHTML = players.mialye.shield;
+//   const spacedMialyeInventory =
+//     players.mialye.inventory.length > 0
+//       ? players.mialye.inventory.map((item) => item.replaceAll("_", " "))
+//       : players.mialye.inventory;
+//   document.querySelector("#inventory-of-mialye").innerHTML =
+//     spacedMialyeInventory;
+//   document.querySelector("#weapon-of-mialye").innerHTML =
+//     players.mialye.weapon.replaceAll("_", " ");
+
+//   document.querySelector("#life-of-regdar").innerHTML = players.regdar.health;
+//   document.querySelector("#mana-of-regdar").innerHTML = players.regdar.mana;
+//   document.querySelector("#steps-of-regdar").innerHTML =
+//     players.regdar.stepsCount;
+//   document.querySelector("#shield-of-regdar").innerHTML = players.regdar.shield;
+//   const spacedRegdarInventory =
+//     players.regdar.inventory.length > 0
+//       ? players.regdar.inventory.map((item) => item.replaceAll("_", " "))
+//       : players.regdar.inventory;
+//   document.querySelector("#inventory-of-regdar").innerHTML =
+//     spacedRegdarInventory;
+//   document.querySelector("#weapon-of-regdar").innerHTML =
+//     players.regdar.weapon.replaceAll("_", " ");
+// }, 1000);
 
 /* ------------------------------------------------------- Event listeners ------------------------------------------------------- */
 
+// Event listener to load the first image, explanation text and map at windows load
 window.addEventListener("load", () => {
   console.log();
   document.querySelector("#game-map").style.backgroundImage =
@@ -355,13 +543,17 @@ window.addEventListener("load", () => {
     document.querySelector("#title").remove();
     document.querySelector("#stat-panel").style.height = "470px";
     document.querySelector("#stat-panel").style.margin = "35px 0 0 0";
+    updateVisuallyPlayersStats();
+    updateVisuallyMonstersStats();
   }, 18000);
 });
 
+// Event listener on the "next" button to trigger the chooseNextPlayer function
 document
   .querySelector("#btn-end-of-turn")
   .addEventListener("click", chooseNextPlayer);
 
+// Event listener on the "attack" button to check whether an heroe can attack and if so to deal damage and handle monster death
 document.querySelector("#btn-attack").addEventListener("click", () => {
   let currentPlayerPosition = document.querySelector(".current-player");
   let currentPlayerObject = players[currentPlayerPosition.id];
@@ -386,9 +578,12 @@ document.querySelector("#btn-attack").addEventListener("click", () => {
       selectedPosition.classList.remove("monster");
       selectedPosition.classList.add("dead-body");
     }
+    // Function to see if players won the game because the dead target was the Lich King
+    checkIfPlayersWon();
   }
 });
 
+// Event listener on the "spell" button to check whether an heroe can cast a spell and if so to deal damage and handle monster death
 document.querySelector("#btn-spell").addEventListener("click", () => {
   let currentPlayerPosition = document.querySelector(".current-player");
   let currentPlayerObject = players[currentPlayerPosition.id];
@@ -413,9 +608,12 @@ document.querySelector("#btn-spell").addEventListener("click", () => {
       selectedPosition.classList.remove("monster");
       selectedPosition.classList.add("dead-body");
     }
+    // Function to see if players won the game because the dead target was the Lich King
+    checkIfPlayersWon();
   }
 });
 
+// Event listener on the "search" button to check whether an heroe is within distance to rummage through the chest, has inventory space, and if so to add a random object
 document.querySelector("#btn-search").addEventListener("click", () => {
   let currentPlayerPosition = document.querySelector(".current-player");
   let currentPlayerObject = players[currentPlayerPosition.id];
@@ -442,10 +640,12 @@ document.querySelector("#btn-search").addEventListener("click", () => {
       selectedPosition.classList.add("opened-chest");
       selectedPosition.classList.remove("is-selected");
       addRandomObjectToInventory(currentPlayerObject);
+      updateVisuallyPlayersStats();
     }
   }
 });
 
+// Event listener on the "heal" button to check whether an heroe is within distance of the selected player, if the selected target is not a monster, and if so to trigger the heal function
 document.querySelector("#btn-heal").addEventListener("click", () => {
   let currentPlayerPosition = document.querySelector(".current-player");
   let currentPlayerObject = players[currentPlayerPosition.id];
@@ -458,10 +658,13 @@ document.querySelector("#btn-heal").addEventListener("click", () => {
     displayModal("You are too far away to heal the player!");
   } else {
     healPlayer(currentPlayerObject, selectedPositionObject);
+    currentPlayerObject.healCount--;
     selectedPosition.classList.remove("is-selected");
+    updateVisuallyPlayersStats();
   }
 });
 
+// Event listeners to link keys with doors
 const intervalId = setTimeout(() => {
   document.querySelector(".key1").addEventListener("click", () => {
     document.querySelector(".door1").classList.remove("door1");
@@ -475,4 +678,4 @@ const intervalId = setTimeout(() => {
     soundDoorOpened.play();
   });
   clearTimeout(intervalId);
-}, 5000);
+}, 15000);

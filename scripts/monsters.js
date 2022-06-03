@@ -129,3 +129,5 @@ export const monsters = {
     inventory: [],
   },
 };
+
+export const monstersArray = Object.keys(monsters);

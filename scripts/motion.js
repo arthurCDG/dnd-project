@@ -2,7 +2,7 @@ import { players } from "./players.js";
 import { traps } from "./traps.js";
 import { monsters } from "./monsters.js";
 import { soundTrapActivated } from "./sounds.js";
-import { displayModal } from "./main.js";
+import { displayModal, updateVisuallyPlayersStats } from "./main.js";
 
 /* ------------------------------------ Get the players object (from the players.js file) ----------------------------------------------- */
 
@@ -79,19 +79,46 @@ const receiveTrapDamage = (player, damage) => {
   if (damage >= player.health) {
     player.isAlive = false;
     player.health = 0;
+    updateVisuallyPlayersStats();
     displayModal(`${player.name} is dead. R.I.P.`);
   } else {
     player.health -= damage;
+    updateVisuallyPlayersStats();
   }
 };
 
 /* ---- Move a player to a targeted square of the gameboard or select sth to interract with(callback of addEventListener on all squares) ---- */
 
-const showPlayerMotionPossibilities = () => {
+export const showPlayerMotionPossibilities = () => {
   let currentPosition = document.querySelector(".current-player");
   let currentPlayerObject = players[currentPosition.id];
+  let dataXAttr = currentPosition.getAttribute("data-x");
+  let dataYAttr = currentPosition.getAttribute("data-y");
 
-  // Loop to check if a game square is available for a player (==> is within range and is not a pillar/chest/monster/hero)
+  for (let i = 1; i < 18; i++) {
+    // Pour un X donné, on teste tous les Y
+    const xDistanceBetweenSquareAndCurrentPosition = Math.abs(dataXAttr - i);
+    if (xDistanceBetweenSquareAndCurrentPosition <= currentPlayerObject.stepsCount) {
+      for (let j = 1; j < 28; j++) {
+        // Pour chaque Y, est-ce que la différence avec dataYattr (- la distance du X avec dataXAttr) est inférieure currentPlayersObject.stepsCount ?
+        const yDistanceBetweenSquareAndCurrentPosition = Math.abs(dataYAttr - j);
+        if (yDistanceBetweenSquareAndCurrentPosition + xDistanceBetweenSquareAndCurrentPosition <= currentPlayerObject.stepsCount) {
+          // Si oui case en bleu
+          let squareToColor = document.querySelector(
+            `[data-x='${i}'][data-y='${j}']`
+          );
+          squareToColor.classList.add("motion-possible");
+        }
+      }
+    }
+  }
+
+};
+
+export const hidePlayerMotionPossibilities = () => {
+  document.querySelectorAll(".motion-possible").forEach((square) => {
+    square.classList.remove("motion-possible");
+  });
 };
 
 export const playerMotion = (event) => {
@@ -152,11 +179,15 @@ export const playerMotion = (event) => {
       newPosition.classList.remove("active-poison-trap");
       newPosition.classList.add("inactive-poison-trap");
       soundTrapActivated.play();
+    } else {
+      updateVisuallyPlayersStats();
     }
+    // Remove player motion possibilities
+    hidePlayerMotionPossibilities();
   }
 };
 
-/* -------------------- Move a monster if it is withing reach of a player (but not if can already attack)  ------------------------------ */
+/* -------------------- Move a monster if it is within reach of a player (but not if can already attack)  ------------------------------ */
 
 const checkIfTargetedSquareIsValid = (square) => {
   if (
