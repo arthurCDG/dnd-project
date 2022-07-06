@@ -111,15 +111,7 @@ const checkIfPlayersWon = () => {
     displayEndGameModal("VICTORY! You defeated the Lich King!");
 };
 
-//! OLD COLD TO ERASE IF THE GAME IS WORKING
-// setTimeout(() => {
-//   setInterval(() => {
-//     if (!document.querySelector("#lichking"))
-//       displayEndGameModal("VICTORY! You defeated the Lich King!");
-//   }, 1000);
-// }, 25000);
-
-/* ------------------------------------------------------ Turned-based system ------------------------------------------------------ */
+/* ------------------------------------------------------ Turn-based system ------------------------------------------------------ */
 
 const playDungeonMasterTurn = () => {
   // Trigger the  function that moves monsters if within range
