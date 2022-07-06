@@ -6,16 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dungeons and dragons</title>
     <link rel="stylesheet" href="./stylesheets/style.css">
+    <link rel="icon" href="./img/dnd_logo_by_chrishankhah_dbq6rjg-fullview.png">
     <script type="module" src="./scripts/main.js"></script>
 </head>
 <body id="dungeonMaster">
+        <div id="state"></div>
         <div id="game-map"></div>
         <div id="interaction-panel">
             <div id="title">
                 <img id="logo" src="./img/dnd-logo-true.png">
                 <p></p>
             </div>
-            <div id="stat-panel">
+            <div id="control-panel">
+                <div id="players-and-monsters-stats">
+                    <button id="player-btn-lidda" class="player-btn character-btn">Liddia</button>
+                    <button id="player-btn-jozian" class="player-btn character-btn">Jozian</button>
+                    <button id="player-btn-mialye" class="player-btn character-btn">Mialye</button>
+                    <button id="player-btn-regdar" class="player-btn character-btn">Regdar</button>
+                    <button id="monsters-stats-btn" class="character-btn">Monsters</button>
+                </div>
+                <div id="buttons">
+                    <button id="btn-end-of-turn" class="btn">End turn</button>
+                    <button id="btn-attack" class="btn">Attack</button>
+                    <button id="btn-heal" class="btn">Heal</button>
+                    <button id="btn-search" class="btn">Search</button>
+                    <button id="btn-spell" class="btn">Spell</button>
+                </div>
+            </div>
+        </div>
+        <dialog id="lidda-dialog" class="modal">
+            <form method="dialog">
+                <div id="lidda-close-btn-div">
+                    <button id="lidda-modal-close-btn">Close</button>
+                </div>
                 <div class="stat-sheet">
                     <div id="div-lidda" class="hero-sheet"><span>Lidda</span>
                         <div class="stats-info">Life: <span id="life-of-lidda"></span></div>
@@ -25,6 +48,13 @@
                         <div class="stats-info">Inventory: <span id="inventory-of-lidda"></span></div>
                         <div class="stats-info">Equipped weapon: <span id="weapon-of-lidda"></span></div>
                     </div>
+                </div>
+            </form>
+        </dialog>
+        <dialog id="jozian-dialog" class="modal">
+            <form method="dialog">
+                <div id="jozian-close-btn-div">
+                    <button id="jozian-modal-close-btn">Close</button>
                 </div>
                 <div class="stat-sheet">
                     <div id="div-jozian" class="hero-sheet"><span>Jozian</span>
@@ -37,6 +67,13 @@
 
                     </div>
                 </div>
+            </form>
+        </dialog>
+        <dialog id="mialye-dialog" class="modal">
+            <form method="dialog">
+                <div id="mialye-close-btn-div">
+                    <button id="mialye-modal-close-btn">Close</button>
+                </div>
                 <div class="stat-sheet">
                     <div id="div-mialye" class="hero-sheet"><span>Mialyë</span>
                         <div class="stats-info">Life: <span id="life-of-mialye"></span></div>
@@ -46,6 +83,13 @@
                         <div class="stats-info">Inventory: <p id="inventory-of-mialye"></p></div>
                         <div class="stats-info">Equipped weapon: <span id="weapon-of-mialye"></span></div>
                     </div>
+                </div>
+            </form>
+        </dialog>
+        <dialog id="regdar-dialog" class="modal">
+            <form method="dialog">
+                <div id="regdar-close-btn-div">
+                    <button id="regdar-modal-close-btn">Close</button>
                 </div>
                 <div class="stat-sheet">
                     <div id="div-regdar" class="hero-sheet"><span>Regdar</span>
@@ -57,15 +101,7 @@
                         <div class="stats-info">Equipped weapon: <span id="weapon-of-regdar"></span></div>
                     </div>
                 </div>
-            </div>
-            <div id="control-panel">
-                <button id="btn-end-of-turn" class="btn">End turn</button>
-                <button id="btn-attack" class="btn">Attack</button>
-                <button id="btn-heal" class="btn">Heal</button>
-                <button id="btn-search" class="btn">Search</button>
-                <button id="btn-spell" class="btn">Spell</button>
-            </div>
-            <div id="state"></div>
-        </div>
+            </form>
+        </dialog>
 </body>
 </html>

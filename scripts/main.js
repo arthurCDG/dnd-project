@@ -58,7 +58,6 @@ export const displayModal = (text) => {
   const closeBtn = document.createElement("button");
   closeBtn.classList.add("btn");
   closeBtn.innerText = "close";
-  // modal.appendChild(closeBtn);
   form.appendChild(closeBtn);
   document.querySelector("body").appendChild(modal);
   modal.showModal();
@@ -389,7 +388,7 @@ const chooseNextPlayer = () => {
   players.regdar.healCount = players.regdar.maxHealCount;
 };
 
-/* ----------------------------------------- Intervals to update players stats every second ------------------------------------- */
+/* ----------------------------------------- Method to update players stats after an action (motion/attack/heal/loot) ------------------------------------- */
 
 // Function to update each player's stats visually
 export const updateVisuallyPlayersStats = () => {
@@ -445,108 +444,85 @@ export const updateVisuallyMonstersStats = () => {
   // });
 };
 
-//! OLD CODE TO ERASE IF THE GAME IS WORKING
-// setInterval(() => {
-//   document.querySelector("#life-of-lidda").innerHTML = players.lidda.health;
-//   document.querySelector("#mana-of-lidda").innerHTML = players.lidda.mana;
-//   document.querySelector("#steps-of-lidda").innerHTML =
-//     players.lidda.stepsCount;
-//   document.querySelector("#shield-of-lidda").innerHTML = players.lidda.shield;
-//   const spacedLiddaInventory =
-//     players.lidda.inventory.length > 0
-//       ? players.lidda.inventory.map((item) => item.replaceAll("_", " "))
-//       : players.lidda.inventory;
-//   document.querySelector("#inventory-of-lidda").innerHTML =
-//     spacedLiddaInventory;
-//   document.querySelector("#weapon-of-lidda").innerHTML =
-//     players.lidda.weapon.replaceAll("_", " ");
-
-//   document.querySelector("#life-of-jozian").innerHTML = players.jozian.health;
-//   document.querySelector("#mana-of-jozian").innerHTML = players.jozian.mana;
-//   document.querySelector("#steps-of-jozian").innerHTML =
-//     players.jozian.stepsCount;
-//   document.querySelector("#shield-of-jozian").innerHTML = players.jozian.shield;
-//   const spacedJozianInventory =
-//     players.jozian.inventory.length > 0
-//       ? players.jozian.inventory.map((item) => item.replaceAll("_", " "))
-//       : players.jozian.inventory;
-//   document.querySelector("#inventory-of-jozian").innerHTML =
-//     spacedJozianInventory;
-//   document.querySelector("#weapon-of-jozian").innerHTML =
-//     players.jozian.weapon.replaceAll("_", " ");
-
-//   document.querySelector("#life-of-mialye").innerHTML = players.mialye.health;
-//   document.querySelector("#mana-of-mialye").innerHTML = players.mialye.mana;
-//   document.querySelector("#steps-of-mialye").innerHTML =
-//     players.mialye.stepsCount;
-//   document.querySelector("#shield-of-mialye").innerHTML = players.mialye.shield;
-//   const spacedMialyeInventory =
-//     players.mialye.inventory.length > 0
-//       ? players.mialye.inventory.map((item) => item.replaceAll("_", " "))
-//       : players.mialye.inventory;
-//   document.querySelector("#inventory-of-mialye").innerHTML =
-//     spacedMialyeInventory;
-//   document.querySelector("#weapon-of-mialye").innerHTML =
-//     players.mialye.weapon.replaceAll("_", " ");
-
-//   document.querySelector("#life-of-regdar").innerHTML = players.regdar.health;
-//   document.querySelector("#mana-of-regdar").innerHTML = players.regdar.mana;
-//   document.querySelector("#steps-of-regdar").innerHTML =
-//     players.regdar.stepsCount;
-//   document.querySelector("#shield-of-regdar").innerHTML = players.regdar.shield;
-//   const spacedRegdarInventory =
-//     players.regdar.inventory.length > 0
-//       ? players.regdar.inventory.map((item) => item.replaceAll("_", " "))
-//       : players.regdar.inventory;
-//   document.querySelector("#inventory-of-regdar").innerHTML =
-//     spacedRegdarInventory;
-//   document.querySelector("#weapon-of-regdar").innerHTML =
-//     players.regdar.weapon.replaceAll("_", " ");
-// }, 1000);
-
 /* ------------------------------------------------------- Event listeners ------------------------------------------------------- */
 
 // Event listener to load the first image, explanation text and map at windows load
 window.addEventListener("load", () => {
-  console.log();
-  document.querySelector("#game-map").style.backgroundImage =
+    document.querySelector("#game-map").style.backgroundImage =
     "url(img/dnd-logo.png)";
-  setTimeout(() => {
+    document.querySelector("#control-panel").style.display = "none";
+  
+    setTimeout(() => {
     document.querySelector("#game-map").style.backgroundImage =
       "url(img/background/dungeon-gameboard-optim.jpg)";
-    initializeMap();
-
-    typeWriter();
-  }, 4000);
-
-  document.querySelector("#stat-panel").style.display = "none";
-  document.querySelector("#control-panel").style.display = "none";
-  document.querySelector("#title").height = "400px";
-
-  let textContainer = document.querySelector("#title p");
-  let text =
-    "Nos quatre héros viennent de pénétrer dans le donjon. Leur objectif : obtenir la couronne du roi liche. Mais attention, ils devront faire face à des monstres sanguinaires et des pièges vicieux sur leur passage.";
-  let i = 0;
-  let speed = 50;
-
-  function typeWriter() {
-    if (i < text.length) {
-      textContainer.textContent += `${text.charAt(i)}`;
-      i++;
-      setTimeout(typeWriter, speed);
-    }
-  }
-
-  setTimeout(() => {
-    document.querySelector("#stat-panel").style.display = "flex";
-    document.querySelector("#control-panel").style.display = "flex";
     document.querySelector("#title").remove();
-    document.querySelector("#stat-panel").style.height = "470px";
-    document.querySelector("#stat-panel").style.margin = "35px 0 0 0";
+    document.querySelector("#control-panel").style.display = "flex";
+    initializeMap();
     updateVisuallyPlayersStats();
     updateVisuallyMonstersStats();
-  }, 18000);
+
+    // typeWriter();
+  }, 4000);
+
+  // document.querySelector("#control-panel").style.display = "none";
+  // document.querySelector("#title").height = "400px";
+
+  // let textContainer = document.querySelector("#title p");
+  // let text =
+  //   "Nos quatre héros viennent de pénétrer dans le donjon. Leur objectif : obtenir la couronne du roi liche. Mais attention, ils devront faire face à des monstres sanguinaires et des pièges vicieux sur leur passage.";
+  // let i = 0;
+  // let speed = 50;
+
+  // function typeWriter() {
+  //   if (i < text.length) {
+  //     textContainer.textContent += `${text.charAt(i)}`;
+  //     i++;
+  //     setTimeout(typeWriter, speed);
+  //   }
+  // }
+
+  // setTimeout(() => {
+  //   document.querySelector("#stat-panel").style.display = "flex";
+  //   document.querySelector("#control-panel").style.display = "flex";
+  //   document.querySelector("#stat-panel").style.height = "470px";
+  //   document.querySelector("#stat-panel").style.margin = "35px 0 0 0";
+
+  // }, 18000);
 });
+
+// Event listeners to attach players and monsters modals to buttons
+
+document.querySelector("#player-btn-lidda").addEventListener("click", () => {
+    document.querySelector("#lidda-dialog").showModal();
+  });
+
+document.querySelector("#lidda-modal-close-btn").addEventListener("click", () => {
+  document.querySelector("#lidda-dialog").close("Closed modal");
+})
+
+document.querySelector("#player-btn-jozian").addEventListener("click", () => {
+  document.querySelector("#jozian-dialog").showModal();
+});
+
+document.querySelector("#jozian-modal-close-btn").addEventListener("click", () => {
+document.querySelector("#jozian-dialog").close("Closed modal");
+})
+
+document.querySelector("#player-btn-mialye").addEventListener("click", () => {
+  document.querySelector("#mialye-dialog").showModal();
+});
+
+document.querySelector("#mialye-modal-close-btn").addEventListener("click", () => {
+document.querySelector("#mialye-dialog").close("Closed modal");
+})
+
+document.querySelector("#player-btn-regdar").addEventListener("click", () => {
+  document.querySelector("#regdar-dialog").showModal();
+});
+
+document.querySelector("#regdar-modal-close-btn").addEventListener("click", () => {
+document.querySelector("#regdar-dialog").close("Closed modal");
+})
 
 // Event listener on the "next" button to trigger the chooseNextPlayer function
 document

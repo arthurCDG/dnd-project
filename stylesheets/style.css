@@ -8,6 +8,7 @@
 
 body {
   display: flex;
+  flex-direction: column;
 }
 
 #game-map {
@@ -31,11 +32,11 @@ body {
 
 #interaction-panel {
   border: 1px solid black;
-  background-image: url("../img/background/Statsheet-bg.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 25.5vw;
-  height: 705px;
+  /* background-image: url("../img/background/Statsheet-bg.jpg"); */
+  /* background-repeat: no-repeat;
+  background-size: cover; */
+  width: 1120px;
+  /* height: 705px; */
 }
 
 #title {
@@ -51,20 +52,15 @@ body {
   line-height: 2rem;
 }
 
-#stat-panel {
-  height: 420px;
+#close-btn-div {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
+  justify-content: right;
 }
 
 .stat-sheet {
   display: flex;
   justify-content: center;
   align-content: center;
-  height: 40%;
-  width: 40%;
 }
 
 .stat-sheet p {
@@ -120,10 +116,25 @@ body {
 }
 
 #control-panel {
-  height: 50px;
-  width: 90%;
+  min-height: 80px;
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: space-around;
+}
+
+#players-and-monsters-stats {
+  display: flex;
+}
+
+.character-btn {
+  width: 20%;
+  height: 30px;
+}
+
+#buttons {
+  display: flex;
   justify-content: space-evenly;
 }
 
@@ -138,15 +149,17 @@ body {
 }
 
 #state {
-  height: 105px;
+  border: 1px solid black;
+  height: 50px;
+  width: 1120px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 }
 
 .modal {
-  width: 200px;
-  height: 200px;
+  min-width: 300px;
+  min-height: 300px;
   border: 1px solid brown;
   background-color: burlywood;
 }

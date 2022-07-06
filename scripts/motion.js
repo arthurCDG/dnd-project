@@ -110,7 +110,7 @@ export const showPlayerMotionPossibilities = () => {
 
           if (checkIfTargetedSquareIsValid(squareToColor)) {
             squareToColor.classList.add("motion-possible");
-          }
+          } 
         }
       }
     }
@@ -185,9 +185,10 @@ export const playerMotion = (event) => {
     } else {
       updateVisuallyPlayersStats();
     }
-    // Remove player motion possibilities
+
     hidePlayerMotionPossibilities();
-  }
+    if (canMove) showPlayerMotionPossibilities();
+   }
 };
 
 /* -------------------- Move a monster if it is within reach of a player (but not if can already attack)  ------------------------------ */
